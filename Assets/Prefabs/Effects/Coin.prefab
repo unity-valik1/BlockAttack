@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4170403115673340580}
   - component: {fileID: 5077224969065894402}
-  - component: {fileID: 456213463032745420}
+  - component: {fileID: 8699921115791869242}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &456213463032745420
+--- !u!114 &8699921115791869242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1796146513513200594}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b025191afdf92a04d8492df40e93856e, type: 3}
+  m_Script: {fileID: 11500000, guid: b379e2c7ddabb0047991641b0821a4b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   move: {x: 9.082997, y: 4.745325, z: 0}

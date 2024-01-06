@@ -9,23 +9,40 @@ public class BestScore : MonoBehaviour
     Score score;
     [SerializeField] private TMP_Text _textBestScore;
 
-    public int _bestScore;
+    public int _playerBestScore;
 
-    private void Start()
+    private void Awake()
     {
         Init();
     }
-
+    private void Start()
+    {
+        LoadBestScore();
+    }
     private void Init()
     {
         score = FindObjectOfType<Score>();
     }
     public void UpdateBestScore()
     {
-        if (_bestScore < score._currentScore)
+        if (_playerBestScore < score._currentScore)
         {
-            _bestScore = score._currentScore;
-            _textBestScore.text = _bestScore.ToString();
+            _playerBestScore = score._currentScore;
+            _textBestScore.text = _playerBestScore.ToString();
+            SaveBestScore();
+        }
+    }
+    public void SaveBestScore()
+    {
+        PlayerPrefs.SetInt("_playerBestScore", _playerBestScore);
+        PlayerPrefs.Save();
+    }
+    public void LoadBestScore()
+    {
+        if (PlayerPrefs.HasKey("_playerBestScore"))
+        {
+            _playerBestScore = PlayerPrefs.GetInt("_playerBestScore");
+            _textBestScore.text = _playerBestScore.ToString();
         }
     }
 }

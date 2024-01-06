@@ -15,11 +15,10 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private bool _isJump;
 
-    void Start()
+    void Awake()
     {
         Init();
     }
-
     private void Init()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -52,7 +51,6 @@ public class Movement : MonoBehaviour
             }
         }
     }
-
     void Move()
     {
         //комп

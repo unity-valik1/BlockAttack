@@ -7,20 +7,46 @@ using UnityEngine.Events;
 
 public class Coins : MonoBehaviour
 {
+    UILogicTopBar uILogicTopBar;
+    SoundsSettings soundsSettings;
+    Armor armor;
+    Bomb bomb;
+    UILogicsGame uILogicsGame;
+
     [SerializeField] private TMP_Text _textCurrentCoins;
     [SerializeField] private GameObject _coins;
 
-    [SerializeField] private int _currentCoins;
+    public int _currentCoinsGame;
+    public int _playerCoins;
+    [SerializeField] private int _armorPurchaseCost;
+    [SerializeField] private int _bombPurchaseCost;
 
     [SerializeField] private float _minTime;
     [SerializeField] private float _maxTime;
 
-    public void AddCoins()
+    private void Awake()
     {
-        int amountCoins = Random.Range(1, 11);
-        _currentCoins += amountCoins;
+        Init();
+    }
+    private void Init()
+    {
+        uILogicTopBar = FindObjectOfType<UILogicTopBar>();
+        soundsSettings = FindObjectOfType<SoundsSettings>();
+        armor = FindObjectOfType<Armor>();
+        bomb = FindObjectOfType<Bomb>();
+        uILogicsGame = FindObjectOfType<UILogicsGame>();
+    }
+    public void ResetCoins()
+    {
+        _currentCoinsGame = 0;
+        _textCurrentCoins.text = _currentCoinsGame.ToString();
+    }
+    public void AddCoinsGame(int amountCoins)
+    {
+        //int amountCoins = Random.Range(1, 11);
+        _currentCoinsGame += amountCoins;
         AnimCoins();
-        SetProgress(_currentCoins - amountCoins, _currentCoins, amountCoins);
+        SetProgress(_currentCoinsGame - amountCoins, _currentCoinsGame, amountCoins);
     }
 
     public void SetProgress(float value, float maxValue, int amountPoints)
@@ -28,7 +54,7 @@ public class Coins : MonoBehaviour
         float normalizedValue = value / maxValue;
         float duration = Mathf.Lerp(_minTime, _maxTime, normalizedValue);
 
-        StartCoroutine(LerpValueCoins(_currentCoins - amountPoints, _currentCoins, duration, SetTextValue));
+        StartCoroutine(LerpValueCoins(_currentCoinsGame - amountPoints, _currentCoinsGame, duration, SetTextValue));
     }
 
     private IEnumerator LerpValueCoins(float startValue, float endValue, float duration, UnityAction<float> action)
@@ -44,7 +70,7 @@ public class Coins : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-        _textCurrentCoins.text = _currentCoins.ToString();
+        _textCurrentCoins.text = _currentCoinsGame.ToString();
     }
 
     private void SetTextValue(float value)
@@ -59,5 +85,69 @@ public class Coins : MonoBehaviour
         sequence.AppendInterval(1.3f);
         sequence.Append(_coins.transform.DOScale(1.5f, 0.25f));
         sequence.Append(_coins.transform.DOScale(1f, 0.25f));
+    }
+
+    public void UseCoinsForArmor()
+    {
+        _playerCoins -= _armorPurchaseCost;
+    }
+    public void UseCoinsForBomb()
+    {
+        _playerCoins -= _bombPurchaseCost;
+    }
+
+    public void AddPlayerCoins()
+    {
+        _playerCoins += _currentCoinsGame;
+        SaveCoins();
+    }
+    public void AddArmorForCoins()
+    {
+        if (_playerCoins >= _armorPurchaseCost)
+        {
+            soundsSettings.PlaySoundButton();
+            UseCoinsForArmor();
+            armor.AddArmor();
+            uILogicTopBar.TextArmorTopBarPanel();
+            uILogicTopBar.TextAmountOfArmorAddArmorPanel();
+            uILogicTopBar.TextCoinsTopBarPanel();
+            uILogicsGame.TextGameAmountOfArmor();
+            SaveCoins();
+        }
+        else
+        {
+            uILogicTopBar.ButtonAddCoins();
+        }
+    }
+    public void AddBombForCoins()
+    {
+        if (_playerCoins >= _bombPurchaseCost)
+        {
+            soundsSettings.PlaySoundButton();
+            UseCoinsForBomb();
+            bomb.AddBomb();
+            uILogicTopBar.TextBombTopBarPanel();
+            uILogicTopBar.TextAmountOfBombAddBombPanel();
+            uILogicTopBar.TextCoinsTopBarPanel();
+            uILogicsGame.TextGameAmountOfBomb();
+            SaveCoins();
+        }
+        else
+        {
+            uILogicTopBar.ButtonAddCoins();
+        }
+    }
+
+    public void SaveCoins()
+    {
+        PlayerPrefs.SetInt("_playerCoins", _playerCoins);
+        PlayerPrefs.Save();
+    }
+    public void LoadCoins()
+    {
+        if (PlayerPrefs.HasKey("_playerCoins"))
+        {
+            _playerCoins = PlayerPrefs.GetInt("_playerCoins");
+        }
     }
 }

@@ -4,22 +4,26 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     Armor armor;
-    LossGame lossGame;
+    UILogicsGame uILogicsGame;
+    ArmorSound armorSound;
+    SoundBrokenHeart soundBrokenHeart;
 
     [SerializeField] private GameObject particleBrokenHeart;
     [SerializeField] private GameObject[] _lifesItems;
 
-    [SerializeField] int lifes;
+    public int lifes;
+    public int maxLifes;
 
-    private void Start()
+    private void Awake()
     {
         Init();
     }
-
     private void Init()
     {
         armor = FindObjectOfType<Armor>();
-        lossGame = FindObjectOfType<LossGame>();
+        uILogicsGame = FindObjectOfType<UILogicsGame>();
+        armorSound = FindObjectOfType<ArmorSound>();
+        soundBrokenHeart = FindObjectOfType<SoundBrokenHeart>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,28 +36,48 @@ public class Health : MonoBehaviour
 
     private void LoseHealth(Collider2D collision)
     {
-        if(armor._isArmor == false)
+        if (armor._isArmor == false)
         {
+            soundBrokenHeart.PlaySoundBrokenHeart();
             Instantiate(particleBrokenHeart, transform.position, Quaternion.identity);
             lifes--;
             if (lifes <= 0)
             {
-                lossGame.Loos();
+                uILogicsGame.LossGamePanel();
                 return;
             }
-            AnimHealth(lifes);
+            AnimLossHealth(lifes);
             transform.position = new Vector2(0, 4f);
         }
-        else if(armor._isArmor == true)
+        else if (armor._isArmor == true)
         {
+            armorSound.PlaySoundArmoreIsActiveFalse();
             armor.ArmoreOff();
             Block block = collision.GetComponentInParent<Block>();
             Destroy(block.gameObject);
+            armor.imgPlayerArmor.SetActive(false);
             //todo анимация ломающегося блока
         }
     }
 
-    public void UpdateHealth()
+    public void UpdateAddHealth(int health)
+    {
+        lifes = health;
+        for (int i = 0; i < _lifesItems.Length; i++)
+        {
+            if (i < lifes)
+            {
+                _lifesItems[i].SetActive(true);
+            }
+            else
+            {
+                _lifesItems[i].SetActive(false);
+            }
+            AnimAddHealth(i);
+        }
+    }
+
+    public void UpdateHealthInGame()
     {
         for (int i = 0; i < _lifesItems.Length; i++)
         {
@@ -67,12 +91,17 @@ public class Health : MonoBehaviour
             }
         }
     }
-
-    private void AnimHealth(int lifes)
+    public void AnimLossHealth(int lifes)
     {
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(_lifesItems[lifes].transform.DOScale(0f, 0.5f));
-        sequence.AppendCallback(UpdateHealth);
+        sequence.Append(_lifesItems[lifes].transform.DOScale(0, 0.5f));
+        sequence.AppendCallback(UpdateHealthInGame);
+    }
+    public void AnimAddHealth(int lifes)
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(UpdateHealthInGame);
+        sequence.Append(_lifesItems[lifes].transform.DOScale(1, 0.5f));
     }
 }
 

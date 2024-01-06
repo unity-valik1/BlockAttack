@@ -9,6 +9,10 @@ TagManager:
   - Block
   - BlockAttack
   - CheckingGameLoss
+  - FxTemporaire
+  - PickUpCoin
+  - PickUpStar
+  - PickUpHeart
   layers:
   - Default
   - TransparentFX

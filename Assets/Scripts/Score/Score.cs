@@ -15,6 +15,11 @@ public class Score : MonoBehaviour
     [SerializeField] private float _minTime;
     [SerializeField] private float _maxTime;
 
+    public void ResetScore()
+    {
+        _currentScore = 0;
+        _textCurrentScore.text = _currentScore.ToString();
+    }
     public void AddPoints(int amountPoints)
     {
         _currentScore += amountPoints;
