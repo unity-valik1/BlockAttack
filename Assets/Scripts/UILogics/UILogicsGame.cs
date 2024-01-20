@@ -14,7 +14,10 @@ public class UILogicsGame : MonoBehaviour
     UILogicMainMenu uILogicMainMenu;
     GenerationBlocks generationBlocks;
     ClearGamePanel clearGamePanel;
-    Health health;
+    Health GetActivePlayerHealth()
+    {
+        return PlayerManager.Instance.ActivePlayer.PlayerHealth;
+    }
     Score score;
     Coins coins;
     MusicSettings musicSettings;
@@ -47,7 +50,6 @@ public class UILogicsGame : MonoBehaviour
         uILogicMainMenu = FindObjectOfType<UILogicMainMenu>();
         generationBlocks = FindObjectOfType<GenerationBlocks>();
         clearGamePanel = FindObjectOfType<ClearGamePanel>();
-        health = FindObjectOfType<Health>();
         score = FindObjectOfType<Score>();
         coins = FindObjectOfType<Coins>();
         musicSettings = FindObjectOfType<MusicSettings>();
@@ -169,7 +171,7 @@ public class UILogicsGame : MonoBehaviour
     {
         for (int i = 0; i < _lifesItems.Length; i++)
         {
-            if (i < health.lifes)
+            if (i < GetActivePlayerHealth().lifes)
             {
                 _lifesItems[i].SetActive(true);
             }
@@ -187,10 +189,10 @@ public class UILogicsGame : MonoBehaviour
     }
     public void UpdateAddHealth()
     {
-        health.lifes = health.maxLifes;
+        GetActivePlayerHealth().lifes = GetActivePlayerHealth().maxLifes;
         for (int i = 0; i < _lifesItems.Length; i++)
         {
-            if (i < health.lifes)
+            if (i < GetActivePlayerHealth().lifes)
             {
                 _lifesItems[i].SetActive(true);
             }
@@ -206,5 +208,13 @@ public class UILogicsGame : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(UpdateHealthInGame);
         sequence.Append(_lifesItems[lifes].transform.DOScale(1, 0.5f));
+    }
+
+    public void NewPlayer(Player NewPlayerPrefab)
+    {
+        var prevPlayer = PlayerManager.Instance.ActivePlayer;
+        var newPlayer = Instantiate<Player>(NewPlayerPrefab, prevPlayer.transform.position, prevPlayer.transform.rotation);
+        Destroy(prevPlayer.gameObject);
+        PlayerManager.Instance.ActivePlayer = newPlayer;
     }
 }
