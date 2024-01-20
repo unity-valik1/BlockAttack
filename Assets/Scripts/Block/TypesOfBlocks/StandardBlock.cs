@@ -11,7 +11,6 @@ public class StandardBlock : MonoBehaviour
 
     public float _speedMove;
 
-    public bool _isMove = false;
 
     public List<Block> blocksCollectedLine = new();
     public List<Block> identicalBlocksHorizontal = new();
@@ -45,7 +44,7 @@ public class StandardBlock : MonoBehaviour
         if (hit == false)
         {
             block.isFall = true;
-            _isMove = false;
+            block._isMove = false;
         }
 
     }
@@ -54,9 +53,9 @@ public class StandardBlock : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (_isMove && transform.position.x != -7.5f || _isMove && transform.position.x != 7.5f)
+            if (block._isMove && transform.position.x != -7.5f || block._isMove && transform.position.x != 7.5f)
             {
-                _isMove = false;
+                block._isMove = false;
 
                 if (collision.transform.position.x > transform.position.x)
                 {
@@ -69,7 +68,7 @@ public class StandardBlock : MonoBehaviour
                     }
                     else
                     {
-                        _isMove = true;
+                         block._isMove = true;
                     }
                 }
                 else if (collision.transform.position.x < transform.position.x)
@@ -83,7 +82,7 @@ public class StandardBlock : MonoBehaviour
                     }
                     else
                     {
-                        _isMove = true;
+                        block._isMove = true;
                     }
                 }
             }
@@ -133,7 +132,7 @@ public class StandardBlock : MonoBehaviour
         if (hits == false)
         {
             block.isFall = true;
-            _isMove = false;
+            block._isMove = false;
         }
         else
         {
@@ -164,7 +163,7 @@ public class StandardBlock : MonoBehaviour
                 if (!block._isDelete)
                 {
                     block.isFall = false;
-                    _isMove = true;
+                    block._isMove = true;
                 }
             }
         }

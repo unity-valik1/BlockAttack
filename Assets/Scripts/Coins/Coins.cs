@@ -1,4 +1,5 @@
 using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,19 +8,22 @@ using UnityEngine.Events;
 
 public class Coins : MonoBehaviour
 {
+    GameManager gameManager;
     UILogicTopBar uILogicTopBar;
     SoundsSettings soundsSettings;
     Armor armor;
     Bomb bomb;
+    Pick pick;
     UILogicsGame uILogicsGame;
+    DatabaseManager databaseManager;
 
     [SerializeField] private TMP_Text _textCurrentCoins;
     [SerializeField] private GameObject _coins;
 
     public int _currentCoinsGame;
-    public int _playerCoins;
     [SerializeField] private int _armorPurchaseCost;
     [SerializeField] private int _bombPurchaseCost;
+    [SerializeField] private int _pickPurchaseCost;
 
     [SerializeField] private float _minTime;
     [SerializeField] private float _maxTime;
@@ -30,12 +34,16 @@ public class Coins : MonoBehaviour
     }
     private void Init()
     {
+        gameManager = FindObjectOfType<GameManager>();
         uILogicTopBar = FindObjectOfType<UILogicTopBar>();
         soundsSettings = FindObjectOfType<SoundsSettings>();
         armor = FindObjectOfType<Armor>();
         bomb = FindObjectOfType<Bomb>();
+        pick = FindObjectOfType<Pick>();
         uILogicsGame = FindObjectOfType<UILogicsGame>();
+        databaseManager = FindObjectOfType<DatabaseManager>();
     }
+
     public void ResetCoins()
     {
         _currentCoinsGame = 0;
@@ -48,7 +56,6 @@ public class Coins : MonoBehaviour
         AnimCoins();
         SetProgress(_currentCoinsGame - amountCoins, _currentCoinsGame, amountCoins);
     }
-
     public void SetProgress(float value, float maxValue, int amountPoints)
     {
         float normalizedValue = value / maxValue;
@@ -56,7 +63,6 @@ public class Coins : MonoBehaviour
 
         StartCoroutine(LerpValueCoins(_currentCoinsGame - amountPoints, _currentCoinsGame, duration, SetTextValue));
     }
-
     private IEnumerator LerpValueCoins(float startValue, float endValue, float duration, UnityAction<float> action)
     {
         //yield return new WaitForSeconds(1.3f);
@@ -72,7 +78,6 @@ public class Coins : MonoBehaviour
         }
         _textCurrentCoins.text = _currentCoinsGame.ToString();
     }
-
     private void SetTextValue(float value)
     {
         value = (int)value;
@@ -89,21 +94,29 @@ public class Coins : MonoBehaviour
 
     public void UseCoinsForArmor()
     {
-        _playerCoins -= _armorPurchaseCost;
+        gameManager._playerCoins -= _armorPurchaseCost;
+        gameManager.SavePlayerPrefsCoins();
     }
     public void UseCoinsForBomb()
     {
-        _playerCoins -= _bombPurchaseCost;
+        gameManager._playerCoins -= _bombPurchaseCost;
+        gameManager.SavePlayerPrefsCoins();
+    }
+    public void UseCoinsForPick()
+    {
+        gameManager._playerCoins -= _pickPurchaseCost;
+        gameManager.SavePlayerPrefsCoins();
     }
 
     public void AddPlayerCoins()
     {
-        _playerCoins += _currentCoinsGame;
-        SaveCoins();
+        gameManager._playerCoins += _currentCoinsGame;
+        gameManager.SavePlayerPrefsCoins();
+        databaseManager.SaveStatsDB();
     }
     public void AddArmorForCoins()
     {
-        if (_playerCoins >= _armorPurchaseCost)
+        if (gameManager._playerCoins >= _armorPurchaseCost)
         {
             soundsSettings.PlaySoundButton();
             UseCoinsForArmor();
@@ -112,7 +125,7 @@ public class Coins : MonoBehaviour
             uILogicTopBar.TextAmountOfArmorAddArmorPanel();
             uILogicTopBar.TextCoinsTopBarPanel();
             uILogicsGame.TextGameAmountOfArmor();
-            SaveCoins();
+            databaseManager.SaveStatsDB();
         }
         else
         {
@@ -121,7 +134,7 @@ public class Coins : MonoBehaviour
     }
     public void AddBombForCoins()
     {
-        if (_playerCoins >= _bombPurchaseCost)
+        if (gameManager._playerCoins >= _bombPurchaseCost)
         {
             soundsSettings.PlaySoundButton();
             UseCoinsForBomb();
@@ -130,24 +143,29 @@ public class Coins : MonoBehaviour
             uILogicTopBar.TextAmountOfBombAddBombPanel();
             uILogicTopBar.TextCoinsTopBarPanel();
             uILogicsGame.TextGameAmountOfBomb();
-            SaveCoins();
+            databaseManager.SaveStatsDB();
         }
         else
         {
             uILogicTopBar.ButtonAddCoins();
         }
     }
-
-    public void SaveCoins()
+    public void AddPickForCoins()
     {
-        PlayerPrefs.SetInt("_playerCoins", _playerCoins);
-        PlayerPrefs.Save();
-    }
-    public void LoadCoins()
-    {
-        if (PlayerPrefs.HasKey("_playerCoins"))
+        if (gameManager._playerCoins >= _pickPurchaseCost)
         {
-            _playerCoins = PlayerPrefs.GetInt("_playerCoins");
+            soundsSettings.PlaySoundButton();
+            UseCoinsForPick();
+            pick.AddPick();
+            uILogicTopBar.TextPickTopBarPanel();
+            uILogicTopBar.TextAmountOfPickAddPickPanel();
+            uILogicTopBar.TextCoinsTopBarPanel();
+            uILogicsGame.TextGameAmountOfPick();
+            databaseManager.SaveStatsDB();
+        }
+        else
+        {
+            uILogicTopBar.ButtonAddCoins();
         }
     }
 }

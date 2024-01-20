@@ -11,6 +11,7 @@ public class Block : MonoBehaviour
     public int _numberBlock;
     public bool isFall = true;
     public bool _isDelete = false;
+    public bool _isMove = false;
 
 
     private void Awake()

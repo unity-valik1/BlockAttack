@@ -35,6 +35,7 @@ public class PlayAllGameObjects : MonoBehaviour
                 changesColorBlock[i].AnimChangesColorPlay();
                 changesColorBlock[i].AnimMoveBlockPlay();
                 changesColorBlock[i]._speedMove = 3.5f;
+                changesColorBlock[i]._pauseChangesColorBlock = false;
             }
         }
     }

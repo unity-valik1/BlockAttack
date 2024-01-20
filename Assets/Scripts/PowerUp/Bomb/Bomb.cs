@@ -1,4 +1,5 @@
 using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class Bomb : MonoBehaviour
 {
+    GameManager gameManager;
     AnimCameraEffectBomb animCameraEffectBomb;
     BoomSmoke boomSmoke;
     DestroyAllBlocks destroyAllBlocks;
@@ -13,11 +15,10 @@ public class Bomb : MonoBehaviour
     BombSound bombSound;
     UILogicTopBar uILogicTopBar;
     UILogicsGame uILogicsGame;
+    DatabaseManager databaseManager;
 
     [SerializeField] private GameObject particleAddBomb;
     [SerializeField] private GameObject buttonAddBomb;
-
-    public int _playerBomb;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class Bomb : MonoBehaviour
     }
     private void Init()
     {
+        gameManager = FindObjectOfType<GameManager>();
         animCameraEffectBomb = GetComponent<AnimCameraEffectBomb>();
         boomSmoke = GetComponent<BoomSmoke>();
         destroyAllBlocks = GetComponent<DestroyAllBlocks>();
@@ -32,6 +34,7 @@ public class Bomb : MonoBehaviour
         bombSound = GetComponent<BombSound>();
         uILogicTopBar = FindObjectOfType<UILogicTopBar>();
         uILogicsGame = FindObjectOfType<UILogicsGame>();
+        databaseManager = FindObjectOfType<DatabaseManager>();
     }
 
     public void Boom()
@@ -55,30 +58,18 @@ public class Bomb : MonoBehaviour
         sequence.SetAutoKill(true);
     }
 
-
     public void UseBomb()
     {
-        _playerBomb--;
+        gameManager._playerBomb--;
         uILogicTopBar.TextBombTopBarPanel();
-        SaveBomb();
+        gameManager.SavePlayerPrefsBomb();
+        databaseManager.SaveStatsDB();
     }
     public void AddBomb()
     {
-        _playerBomb++;
+        gameManager._playerBomb++;
         Instantiate(particleAddBomb, buttonAddBomb.transform.position, Quaternion.identity);
-        SaveBomb();
-    }
-
-    public void SaveBomb()
-    {
-        PlayerPrefs.SetInt("_playerBomb", _playerBomb);
-        PlayerPrefs.Save();
-    }
-    public void LoadBomb()
-    {
-        if (PlayerPrefs.HasKey("_playerBomb"))
-        {
-            _playerBomb = PlayerPrefs.GetInt("_playerBomb");
-        }
+        gameManager.SavePlayerPrefsBomb();
+        databaseManager.SaveStatsDB();
     }
 }

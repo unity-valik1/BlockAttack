@@ -185,10 +185,10 @@ MonoBehaviour:
   identicalBlocksVertical: []
   identicalBlocksHorizontalAndVertical: []
   blocksDelete: []
-  _pointsIdenticalBlocks: 25
-  _pointsCollectedLine: 150
-  _coinsIdenticalBlocks: 5
-  _coinsCollectedLine: 30
+  _pointsIdenticalBlocks: 50
+  _pointsCollectedLine: 250
+  _coinsIdenticalBlocks: 25
+  _coinsCollectedLine: 100
   _newNumberBlock: 0
   _timeInterval: 5
 --- !u!212 &3124627963785018820

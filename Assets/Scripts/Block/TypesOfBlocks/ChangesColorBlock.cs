@@ -17,7 +17,6 @@ public class ChangesColorBlock : MonoBehaviour
 
     public float _speedMove;
 
-    public bool _isMove = false;
 
     public List<Block> blocksCollectedLine = new();
     public List<Block> identicalBlocksHorizontal = new();
@@ -34,6 +33,7 @@ public class ChangesColorBlock : MonoBehaviour
 
     [SerializeField] float _timeInterval;
     private float _time = 0f;
+    public bool _pauseChangesColorBlock = false;
 
     Tween tweenChangesColor;
     Tween tweenMoveBlock;
@@ -62,16 +62,19 @@ public class ChangesColorBlock : MonoBehaviour
         if (hit == false)
         {
             block.isFall = true;
-            _isMove = false;
+            block._isMove = false;
         }
 
-        _time += Time.deltaTime;
-        if (_time >= _timeInterval)
+        if(!_pauseChangesColorBlock)
         {
-            _time = 0;
-            if(block._isDelete == false)
+            _time += Time.deltaTime;
+            if (_time >= _timeInterval)
             {
-                UpdateChangesColorAndChecks();
+                _time = 0;
+                if (block._isDelete == false)
+                {
+                    UpdateChangesColorAndChecks();
+                }
             }
         }
     }
@@ -169,9 +172,9 @@ public class ChangesColorBlock : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (_isMove && transform.position.x != -7.5f || _isMove && transform.position.x != 7.5f)
+            if (block._isMove && transform.position.x != -7.5f || block._isMove && transform.position.x != 7.5f)
             {
-                _isMove = false;
+                block._isMove = false;
 
                 if (collision.transform.position.x > transform.position.x)
                 {
@@ -184,7 +187,7 @@ public class ChangesColorBlock : MonoBehaviour
                     }
                     else
                     {
-                        _isMove = true;
+                        block._isMove = true;
                     }
                 }
                 else if (collision.transform.position.x < transform.position.x)
@@ -198,7 +201,7 @@ public class ChangesColorBlock : MonoBehaviour
                     }
                     else
                     {
-                        _isMove = true;
+                        block._isMove = true;
                     }
                 }
             }
@@ -248,7 +251,7 @@ public class ChangesColorBlock : MonoBehaviour
         if (hits == false)
         {
             block.isFall = true;
-            _isMove = false;
+            block._isMove = false;
         }
         else
         {
@@ -276,7 +279,7 @@ public class ChangesColorBlock : MonoBehaviour
             if (!block._isDelete)
             {
                 block.isFall = false;
-                _isMove = true;
+                block._isMove = true;
             }
         }
     }

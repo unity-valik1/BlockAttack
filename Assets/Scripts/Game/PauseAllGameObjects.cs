@@ -35,6 +35,7 @@ public class PauseAllGameObjects : MonoBehaviour
                 changesColorBlock[i].AnimChangesColorPause();
                 changesColorBlock[i].AnimMoveBlockPause();
                 changesColorBlock[i]._speedMove = 0;
+                changesColorBlock[i]._pauseChangesColorBlock = true;
             }
         }
     }

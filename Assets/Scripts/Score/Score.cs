@@ -10,7 +10,7 @@ public class Score : MonoBehaviour
     [SerializeField] private TMP_Text _textCurrentScore;
     [SerializeField] private GameObject _score;
 
-    [SerializeField] public int _currentScore;
+    public int _currentScore;
 
     [SerializeField] private float _minTime;
     [SerializeField] private float _maxTime;

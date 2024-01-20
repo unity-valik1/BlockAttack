@@ -1,3 +1,5 @@
+using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,29 +9,32 @@ using UnityEngine.UI;
 
 public class UILogicsGame : MonoBehaviour
 {
+    GameManager gameManager;
     UILogicTopBar uILogicTopBar;
     UILogicMainMenu uILogicMainMenu;
     GenerationBlocks generationBlocks;
     ClearGamePanel clearGamePanel;
     Health health;
-    BestScore bestScore;
     Score score;
     Coins coins;
     MusicSettings musicSettings;
     SoundsSettings soundsSettings;
-    Armor armor;
-    Bomb bomb;
     PauseAllGameObjects pauseAllGameObjects;
     PlayAllGameObjects playAllGameObjects;
+    Armor armor;
+    ArmorTimer armorTimer;
 
     [SerializeField] private GameObject _GamePanel;
     [SerializeField] private GameObject _PausePanel;
     [SerializeField] private GameObject _LossGamePanel;
 
+    [SerializeField] private GameObject[] _lifesItems;
+
     [SerializeField] private TMP_Text _textScoreLossGamePanel;
     [SerializeField] private TMP_Text _textCoinsLossGamePanel;
     [SerializeField] private TMP_Text _textGameAmountOfArmor;
     [SerializeField] private TMP_Text _textGameAmountOfBomb;
+    [SerializeField] private TMP_Text _textGameAmountOfPick;
 
     private void Awake()
     {
@@ -37,35 +42,38 @@ public class UILogicsGame : MonoBehaviour
     }
     private void Init()
     {
+        gameManager = FindObjectOfType<GameManager>();
         uILogicTopBar = FindObjectOfType<UILogicTopBar>();
         uILogicMainMenu = FindObjectOfType<UILogicMainMenu>();
         generationBlocks = FindObjectOfType<GenerationBlocks>();
         clearGamePanel = FindObjectOfType<ClearGamePanel>();
         health = FindObjectOfType<Health>();
-        bestScore = FindObjectOfType<BestScore>();
         score = FindObjectOfType<Score>();
         coins = FindObjectOfType<Coins>();
         musicSettings = FindObjectOfType<MusicSettings>();
         soundsSettings = FindObjectOfType<SoundsSettings>();
-        armor = FindObjectOfType<Armor>();
-        bomb = FindObjectOfType<Bomb>();
         pauseAllGameObjects = FindObjectOfType<PauseAllGameObjects>();
         playAllGameObjects = FindObjectOfType<PlayAllGameObjects>();
+        armor = FindObjectOfType<Armor>();
+        armorTimer = FindObjectOfType<ArmorTimer>();
     }
 
+    //панель проигрыша
     public void LossGamePanel()
     {
         _LossGamePanel.SetActive(true);
         generationBlocks.ScriptEnabledFalse();
         pauseAllGameObjects.PauseAll();
-        health.UpdateHealthInGame();
+        UpdateHealthInGame();
         uILogicTopBar.TopBarPanelIsActiveTrue();
         coins.AddPlayerCoins();
         uILogicTopBar.TextCoinsTopBarPanel();
-        bestScore.UpdateBestScore();
+        uILogicMainMenu.UpdateBestScore();
         TextScoreLossGamePanel(); 
         TextCoinsLossGamePanel();
+        armor.ArmoreOff();
         musicSettings.PlayAudioClipsMenu();
+        armorTimer.StopTimer();
     }
     private void TextScoreLossGamePanel()
     {
@@ -76,6 +84,8 @@ public class UILogicsGame : MonoBehaviour
         _textCoinsLossGamePanel.text = coins._currentCoinsGame.ToString();
     }
 
+
+    //кнопка паузы
     public void ButtonPause()
     {
         generationBlocks.ScriptEnabledFalse();
@@ -84,7 +94,10 @@ public class UILogicsGame : MonoBehaviour
         uILogicTopBar.TopBarPanelIsActiveTrue();
         musicSettings.PlayAudioClipsMenu();
         soundsSettings.PlaySoundButton();
+        armorTimer.StopTimer();
     }
+
+    //кнопка выйти в меню
     public void ButtonMainMenu()
     {
         _LossGamePanel.SetActive(false);
@@ -95,8 +108,11 @@ public class UILogicsGame : MonoBehaviour
         generationBlocks.ScriptEnabledFalse();
         clearGamePanel.DestroyAll();
         uILogicTopBar.TopBarPanelIsActiveTrue();
+        armor.ArmoreOff();
         soundsSettings.PlaySoundButton();
     }
+
+    //кнопка выхода из незаконченной игры
     public void ButtonExitPausePanel()
     {
         _LossGamePanel.SetActive(true);
@@ -107,11 +123,13 @@ public class UILogicsGame : MonoBehaviour
         clearGamePanel.DestroyAll();
         coins.AddPlayerCoins();
         uILogicTopBar.TextCoinsTopBarPanel();
-        bestScore.UpdateBestScore();
+        uILogicMainMenu.UpdateBestScore();
         TextScoreLossGamePanel();
         TextCoinsLossGamePanel();
         soundsSettings.PlaySoundButton();
     }
+
+    //кнопка продолжить игру
     public void ButtonContinueGame()
     {
         playAllGameObjects.PlayAll();
@@ -120,6 +138,7 @@ public class UILogicsGame : MonoBehaviour
         uILogicTopBar.TopBarPanelIsActiveFalse();
         musicSettings.PlayAudioClipsGame();
         soundsSettings.PlaySoundButton();
+        armorTimer.StartTimer();
     }
 
     public void GamePanelIsActiveTrue()
@@ -133,10 +152,59 @@ public class UILogicsGame : MonoBehaviour
 
     public void TextGameAmountOfArmor()
     {
-        _textGameAmountOfArmor.text = armor._playerArmor.ToString();
+        _textGameAmountOfArmor.text = gameManager._playerArmor.ToString();
     }
     public void TextGameAmountOfBomb()
     {
-        _textGameAmountOfBomb.text = bomb._playerBomb.ToString();
+        _textGameAmountOfBomb.text = gameManager._playerBomb.ToString();
+    }
+    public void TextGameAmountOfPick()
+    {
+        _textGameAmountOfPick.text = gameManager._playerPick.ToString();
+    }
+
+
+
+    public void UpdateHealthInGame()
+    {
+        for (int i = 0; i < _lifesItems.Length; i++)
+        {
+            if (i < health.lifes)
+            {
+                _lifesItems[i].SetActive(true);
+            }
+            else
+            {
+                _lifesItems[i].SetActive(false);
+            }
+        }
+    }
+    public void AnimLossHealth(int lifes)
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(_lifesItems[lifes].transform.DOScale(0, 0.5f));
+        sequence.AppendCallback(UpdateHealthInGame);
+    }
+    public void UpdateAddHealth()
+    {
+        health.lifes = health.maxLifes;
+        for (int i = 0; i < _lifesItems.Length; i++)
+        {
+            if (i < health.lifes)
+            {
+                _lifesItems[i].SetActive(true);
+            }
+            else
+            {
+                _lifesItems[i].SetActive(false);
+            }
+            AnimAddHealth(i);
+        }
+    }
+    public void AnimAddHealth(int lifes)
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(UpdateHealthInGame);
+        sequence.Append(_lifesItems[lifes].transform.DOScale(1, 0.5f));
     }
 }

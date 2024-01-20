@@ -3,28 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using DG.Tweening.Core.Easing;
 
 public class UILogicTopBar : MonoBehaviour
 {
+    GameManager gameManager;
     SoundsSettings soundsSettings;
     Coins coins;
-    Armor armor;
-    Bomb bomb;
+
+
     [SerializeField] private GameObject _TopBarPanel;
     [SerializeField] private GameObject _SettingsPanel;
 
     [SerializeField] private GameObject _AddCoinsPanel;
-    [SerializeField] private TMP_Text _textPlayerCoins;
+    public TMP_Text _textPlayerCoins;
 
     [SerializeField] private GameObject _AddArmorPanel;
     [SerializeField] private GameObject _AddArmorTV;
-    [SerializeField] private TMP_Text _textPlayerArmor;
+    public TMP_Text _textPlayerArmor;
     [SerializeField] private TMP_Text _textAmountOfArmor;
 
     [SerializeField] private GameObject _AddBombPanel;
     [SerializeField] private GameObject _AddBombTV;
-    [SerializeField] private TMP_Text _textPlayerBomb;
+    public TMP_Text _textPlayerBomb;
     [SerializeField] private TMP_Text _textAmountOfBomb;
+
+    [SerializeField] private GameObject _AddPickPanel;
+    [SerializeField] private GameObject _AddPickTV;
+    public TMP_Text _textPlayerPick;
+    [SerializeField] private TMP_Text _textAmountOfPick;
 
     Tween tween;
 
@@ -34,21 +41,18 @@ public class UILogicTopBar : MonoBehaviour
     }
     private void Init()
     {
+        gameManager = FindObjectOfType<GameManager>();
         soundsSettings = FindObjectOfType<SoundsSettings>();
         coins = FindObjectOfType<Coins>();
-        armor = FindObjectOfType<Armor>();
-        bomb = FindObjectOfType<Bomb>();
     }
 
     private void Start()
     {
-        coins.LoadCoins();
-        armor.LoadArmor();
-        bomb.LoadBomb();
         TopBarPanelIsActiveTrue();
         TextCoinsTopBarPanel();
         TextArmorTopBarPanel();
         TextBombTopBarPanel();
+        TextPickTopBarPanel();
     }
 
     //ТопБар
@@ -65,15 +69,19 @@ public class UILogicTopBar : MonoBehaviour
 
     public void TextCoinsTopBarPanel()
     {
-        _textPlayerCoins.text = coins._playerCoins.ToString();
+        _textPlayerCoins.text = gameManager._playerCoins.ToString();
     }
     public void TextArmorTopBarPanel()
     {
-        _textPlayerArmor.text = armor._playerArmor.ToString();
+        _textPlayerArmor.text = gameManager._playerArmor.ToString();
     }
     public void TextBombTopBarPanel()
     {
-        _textPlayerBomb.text = bomb._playerBomb.ToString();
+        _textPlayerBomb.text = gameManager._playerBomb.ToString();
+    }
+    public void TextPickTopBarPanel()
+    {
+        _textPlayerPick.text = gameManager._playerPick.ToString();
     }
 
     //Настройки
@@ -121,7 +129,6 @@ public class UILogicTopBar : MonoBehaviour
         sequence.Append(_AddCoinsPanel.transform.DOScale(1.1f, 0.1f));
         sequence.Append(_AddCoinsPanel.transform.DOScale(1f, 0.1f));
     }
-
 
     public void ButtonAddCoinsClose()
     {
@@ -189,7 +196,7 @@ public class UILogicTopBar : MonoBehaviour
     }
     public void TextAmountOfArmorAddArmorPanel()
     {
-        _textAmountOfArmor.text = "У тебя есть: " + armor._playerArmor.ToString();
+        _textAmountOfArmor.text = "У тебя есть: " + gameManager._playerArmor.ToString();
     }
 
     //Бомба
@@ -248,8 +255,65 @@ public class UILogicTopBar : MonoBehaviour
     }
     public void TextAmountOfBombAddBombPanel()
     {
-        _textAmountOfBomb.text = "У тебя есть: " + bomb._playerBomb.ToString();
+        _textAmountOfBomb.text = "У тебя есть: " + gameManager._playerBomb.ToString();
     }
 
+    //Кирка
+    public void ButtonAddPick()
+    {
+        soundsSettings.PlaySoundButton();
+        TextAmountOfPickAddPickPanel();
+        AddPickPanelIsActiveTrue();
+        AnimAddPickPanel();
+        AnimAddPickPanelTVTrue();
+    }
+    private void AddPickPanelIsActiveTrue()
+    {
+        _AddPickPanel.SetActive(true);
+    }
+    private void AnimAddPickPanel()
+    {
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
+        sequence.Append(_AddPickPanel.transform.DOScale(1.1f, 0.1f));
+        sequence.Append(_AddPickPanel.transform.DOScale(1f, 0.1f));
+    }
+    private void AnimAddPickPanelTVTrue()
+    {
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
+        tween = sequence;
+        sequence.AppendInterval(1);
+        sequence.Append(_AddPickTV.transform.DORotate(new Vector3(0, 0, 10), 0.1f, RotateMode.Fast));
+        sequence.Append(_AddPickTV.transform.DORotate(new Vector3(0, 0, 0), 0.1f, RotateMode.Fast));
+        sequence.Append(_AddPickTV.transform.DORotate(new Vector3(0, 0, -10), 0.1f, RotateMode.Fast));
+        sequence.Append(_AddPickTV.transform.DORotate(new Vector3(0, 0, 0), 0.1f, RotateMode.Fast));
+        sequence.Append(_AddPickTV.transform.DORotate(new Vector3(0, 0, 10), 0.1f, RotateMode.Fast));
+        sequence.Append(_AddPickTV.transform.DORotate(new Vector3(0, 0, 0), 0.1f, RotateMode.Fast));
+        sequence.AppendInterval(2);
+        sequence.SetLoops(-1);
+    }
 
+    public void ButtonAddPickClose()
+    {
+        soundsSettings.PlaySoundButton();
+        AddPickPanelIsActiveFalse();
+        AnimAddPickPanelTVFalse();
+    }
+    private void AddPickPanelIsActiveFalse()
+    {
+        _AddPickPanel.SetActive(false);
+    }
+    private void AnimAddPickPanelTVFalse()
+    {
+        tween.Kill();
+        _AddPickTV.transform.rotation = Quaternion.identity;
+    }
+
+    public void ButtonAddPickForCoins()
+    {
+        coins.AddPickForCoins();
+    }
+    public void TextAmountOfPickAddPickPanel()
+    {
+        _textAmountOfPick.text = "У тебя есть: " + gameManager._playerPick.ToString();
+    }
 }

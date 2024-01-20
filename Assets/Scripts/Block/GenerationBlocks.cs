@@ -159,6 +159,12 @@ public class GenerationBlocks : MonoBehaviour
         }
     }
 
+    public void RestartNumberBlocksSpawn()
+    {
+        _numberBlocksSpawn = 0;
+        _spawnSpeed = 2;
+    }
+
     public void ScriptEnabledTrue()
     {
         enabled = true;

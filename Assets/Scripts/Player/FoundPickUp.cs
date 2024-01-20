@@ -7,6 +7,7 @@ public class FoundPickUp : MonoBehaviour
     Score score;
     Coins coins;
     Health health;
+    UILogicsGame uILogicsGame;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class FoundPickUp : MonoBehaviour
         score = FindObjectOfType<Score>();
         coins = FindObjectOfType<Coins>();
         health = FindObjectOfType<Health>();
+        uILogicsGame = FindObjectOfType<UILogicsGame>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -30,7 +32,7 @@ public class FoundPickUp : MonoBehaviour
             }
             else
             {
-                health.AnimAddHealth(health.lifes);
+                uILogicsGame.AnimAddHealth(health.lifes);
                 health.lifes++;
             }
         }
