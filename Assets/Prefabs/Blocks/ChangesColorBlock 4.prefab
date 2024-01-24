@@ -157,6 +157,7 @@ MonoBehaviour:
   _numberBlock: 5
   isFall: 1
   _isDelete: 0
+  _isMove: 0
 --- !u!114 &-4050836956771020151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,13 +174,12 @@ MonoBehaviour:
   animBlock: {fileID: 625521545490244853}
   animBlockGO: {fileID: 1589862497006855525}
   _imgsBlock:
-  - {fileID: 21300000, guid: dd79b055b8891d949ad51d14e7d1cfa8, type: 3}
-  - {fileID: 21300000, guid: 0ad55d91c72159c4a8ccc4bc55646eda, type: 3}
-  - {fileID: 21300000, guid: 306c8f0a7a3861341811687211065b6e, type: 3}
-  - {fileID: 21300000, guid: db6a95aff3fb8a94e9c9ecee18fee7f1, type: 3}
+  - {fileID: 21300000, guid: f72ff95566aba2544ac48275504a2613, type: 3}
+  - {fileID: 21300000, guid: 987f81f285ab338479674f916902b2cc, type: 3}
+  - {fileID: 21300000, guid: fae02773f934bc14b9a6d2d53cb4036e, type: 3}
+  - {fileID: 21300000, guid: 44fba053d25c6304788714c74edda565, type: 3}
   deadTrigger: {fileID: 7647205130405820358}
   _speedMove: 3.5
-  _isMove: 0
   blocksCollectedLine: []
   identicalBlocksHorizontal: []
   identicalBlocksVertical: []
@@ -191,6 +191,7 @@ MonoBehaviour:
   _coinsCollectedLine: 100
   _newNumberBlock: 0
   _timeInterval: 5
+  _pauseChangesColorBlock: 0
 --- !u!212 &3124627963785018820
 SpriteRenderer:
   m_ObjectHideFlags: 0

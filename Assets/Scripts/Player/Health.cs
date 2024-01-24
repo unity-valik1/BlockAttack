@@ -7,6 +7,7 @@ public class Health : MonoBehaviour
     UILogicsGame uILogicsGame;
     ArmorSound armorSound;
     SoundBrokenHeart soundBrokenHeart;
+    Vibrations vibrations;
 
     [SerializeField] private GameObject particleBrokenHeart;
 
@@ -23,6 +24,7 @@ public class Health : MonoBehaviour
         uILogicsGame = FindObjectOfType<UILogicsGame>();
         armorSound = FindObjectOfType<ArmorSound>();
         soundBrokenHeart = FindObjectOfType<SoundBrokenHeart>();
+        vibrations = FindObjectOfType<Vibrations>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -38,6 +40,7 @@ public class Health : MonoBehaviour
         if (armor._isArmor == false)
         {
             soundBrokenHeart.PlaySoundBrokenHeart();
+            vibrations.Vibration();
             Instantiate(particleBrokenHeart, transform.position, Quaternion.identity);
             lifes--;
             if (lifes <= 0)

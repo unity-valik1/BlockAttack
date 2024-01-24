@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleEffectsPick: {fileID: 1040608886635896, guid: a97415c6b57076f41a6621a7b51d63a3, type: 3}
+  soundEffectsPick: {fileID: 8300000, guid: b1756478216024f4caee00d10ba467e9, type: 3}
+  soundEffectsBlockDestroy: {fileID: 8300000, guid: c7e7ca12ecc79884eb7e45603ea957e8, type: 3}
   transformEffectsPick: {fileID: 584831978975373201}
 --- !u!1 &584831978975373201
 GameObject:

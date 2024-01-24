@@ -18,7 +18,7 @@ public class BlockAnimDelete : MonoBehaviour
     {
         Sequence sequence = DOTween.Sequence();
         tween = sequence;
-        sequence.Append(transform.DOScale(0f, 1f));
+        sequence.Append(transform.DOScale(0f, 0.5f));
         sequence.AppendCallback(DeleteObj);
     }
     private void ParticleEffect()

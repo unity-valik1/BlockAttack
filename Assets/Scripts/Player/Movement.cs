@@ -7,6 +7,7 @@ public class Movement : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer sr;
     Animator animator;
+    ViewCupOnPlayer viewCupOnPlayer;
 
 
     [SerializeField] private Collider2D _handsPlayer;
@@ -26,6 +27,7 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        viewCupOnPlayer = GetComponentInChildren<ViewCupOnPlayer>();
     }
 
     void Update()
@@ -56,7 +58,7 @@ public class Movement : MonoBehaviour
     void Move()
     {
         //комп
-        _movement = Input.GetAxis("Horizontal");
+        //_movement = Input.GetAxis("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -118,6 +120,7 @@ public class Movement : MonoBehaviour
         animator.SetBool("PushRight", false);
         animator.SetBool("PushLeft", false);
         _handsPlayer.enabled = true;
+        viewCupOnPlayer.ChangesCupLeft();
     }
     //ходьба вправо
     public void OnButtonMoveRight()
@@ -129,6 +132,7 @@ public class Movement : MonoBehaviour
         animator.SetBool("PushRight", false);
         animator.SetBool("PushLeft", false);
         _handsPlayer.enabled = true;
+        viewCupOnPlayer.ChangesCupRight();
     }
     //стойка
     public void OnButtonMoveUp()
@@ -140,6 +144,7 @@ public class Movement : MonoBehaviour
         animator.SetBool("PushRight", false);
         animator.SetBool("PushLeft", false);
         _handsPlayer.enabled = false;
+        viewCupOnPlayer.ChangesCupFront();
     }
 
     //толкать
@@ -150,6 +155,7 @@ public class Movement : MonoBehaviour
         animator.SetBool("MoveRight", false);
         animator.SetBool("PushRight", false);
         animator.SetBool("PushLeft", true);
+        viewCupOnPlayer.ChangesCupLeft();
     }
     public void PushRight()
     {
@@ -158,6 +164,7 @@ public class Movement : MonoBehaviour
         animator.SetBool("MoveRight", false);
         animator.SetBool("PushRight", true);
         animator.SetBool("PushLeft", false);
+        viewCupOnPlayer.ChangesCupRight();
     }
 
     //от толкания в движение в сторону
@@ -168,6 +175,7 @@ public class Movement : MonoBehaviour
         animator.SetBool("MoveLeft", true);
         animator.SetBool("PushRight", false);
         animator.SetBool("PushLeft", false);
+        viewCupOnPlayer.ChangesCupLeft();
     }
     public void PushNotRight()
     {
@@ -176,6 +184,7 @@ public class Movement : MonoBehaviour
         animator.SetBool("MoveLeft", false);
         animator.SetBool("PushRight", false);
         animator.SetBool("PushLeft", false);
+        viewCupOnPlayer.ChangesCupRight();
     }
 
     private void OnDrawGizmos()

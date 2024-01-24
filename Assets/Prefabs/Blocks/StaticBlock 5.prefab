@@ -55,6 +55,7 @@ MonoBehaviour:
   _numberBlock: 4
   isFall: 1
   _isDelete: 0
+  _isMove: 0
 --- !u!114 &-2574299195356294817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +120,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 30fa2c873ededb6448b2548f4455f380, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 06d7d1a41f09a0140859734c7a27611d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

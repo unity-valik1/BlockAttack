@@ -14,10 +14,11 @@ public class UILogicsGame : MonoBehaviour
     UILogicMainMenu uILogicMainMenu;
     GenerationBlocks generationBlocks;
     ClearGamePanel clearGamePanel;
-    Health GetActivePlayerHealth()
-    {
-        return PlayerManager.Instance.ActivePlayer.PlayerHealth;
-    }
+    Health health;
+    //Health GetActivePlayerHealth()
+    //{
+    //    return PlayerManager.Instance.ActivePlayer.PlayerHealth;
+    //}
     Score score;
     Coins coins;
     MusicSettings musicSettings;
@@ -50,6 +51,7 @@ public class UILogicsGame : MonoBehaviour
         uILogicMainMenu = FindObjectOfType<UILogicMainMenu>();
         generationBlocks = FindObjectOfType<GenerationBlocks>();
         clearGamePanel = FindObjectOfType<ClearGamePanel>();
+        health = FindObjectOfType<Health>();
         score = FindObjectOfType<Score>();
         coins = FindObjectOfType<Coins>();
         musicSettings = FindObjectOfType<MusicSettings>();
@@ -171,7 +173,7 @@ public class UILogicsGame : MonoBehaviour
     {
         for (int i = 0; i < _lifesItems.Length; i++)
         {
-            if (i < GetActivePlayerHealth().lifes)
+            if (i < /*GetActivePlayerHealth()*/health.lifes)
             {
                 _lifesItems[i].SetActive(true);
             }
@@ -189,10 +191,10 @@ public class UILogicsGame : MonoBehaviour
     }
     public void UpdateAddHealth()
     {
-        GetActivePlayerHealth().lifes = GetActivePlayerHealth().maxLifes;
+        /*GetActivePlayerHealth()*/health.lifes = /*GetActivePlayerHealth()*/health.maxLifes;
         for (int i = 0; i < _lifesItems.Length; i++)
         {
-            if (i < GetActivePlayerHealth().lifes)
+            if (i < /*GetActivePlayerHealth()*/health.lifes)
             {
                 _lifesItems[i].SetActive(true);
             }

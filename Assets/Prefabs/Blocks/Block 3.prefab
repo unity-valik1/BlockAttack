@@ -55,6 +55,7 @@ MonoBehaviour:
   _numberBlock: 3
   isFall: 1
   _isDelete: 0
+  _isMove: 0
 --- !u!114 &6802990227615715995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +70,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deadTrigger: {fileID: 7647205130405820358}
   _speedMove: 3.5
-  _isMove: 0
   blocksCollectedLine: []
   identicalBlocksHorizontal: []
   identicalBlocksVertical: []
@@ -120,7 +120,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: db6a95aff3fb8a94e9c9ecee18fee7f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 44fba053d25c6304788714c74edda565, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

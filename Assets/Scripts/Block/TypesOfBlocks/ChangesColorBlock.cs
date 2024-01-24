@@ -346,7 +346,7 @@ public class ChangesColorBlock : MonoBehaviour
                 {
                     Block block = hitsRight[i].collider.GetComponent<Block>();
                     Transform transform = hitsRight[i].collider.GetComponent<Transform>();
-                    if (transform.position.y == this.transform.position.y)
+                    if (transform.position.y == this.transform.position.y && block._isDelete == false)
                     {
                         blocksCollectedLine.Add(block);
                     }
@@ -559,7 +559,7 @@ public class ChangesColorBlock : MonoBehaviour
                     blocksDelete[k]._isDelete = true;
                     blocksDelete[k].BlockAnimDelete();
                     blocksDelete[k].sr.enabled = false;
-                    Destroy(blocksDelete[k].gameObject, 1f);
+                    Destroy(blocksDelete[k].gameObject, 0.5f);
                 }
             }
             block.PlaySoundBlocksDestroy();
