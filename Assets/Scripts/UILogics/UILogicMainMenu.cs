@@ -17,11 +17,16 @@ public class UILogicMainMenu : MonoBehaviour
     SoundsSettings soundsSettings;
     GameManager gameManager;
     DatabaseManager databaseManager;
+    SkinsPlayer skinsPlayer;
+    Gates gates;
 
     [SerializeField] private GameObject _MainMenuPanel;
     [SerializeField] private GameObject _scoreboardPanel;
     [SerializeField] private GameObject _shopPanel;
     [SerializeField] private GameObject _scoreboardLoading;
+
+    [SerializeField] private TMP_Text _textMyBestScoreOnScoreboardPanel;
+    [SerializeField] private TMP_Text _textMyNameOnScoreboardPanel;
 
     [SerializeField] private TMP_Text _textNewGame;
     public TMP_Text _textBestScore;
@@ -42,6 +47,8 @@ public class UILogicMainMenu : MonoBehaviour
         soundsSettings = FindObjectOfType<SoundsSettings>();
         gameManager = FindObjectOfType<GameManager>();
         databaseManager = FindObjectOfType<DatabaseManager>();
+        skinsPlayer = FindObjectOfType<SkinsPlayer>();
+        gates = FindObjectOfType<Gates>();
     }
 
     private void Start()
@@ -53,19 +60,44 @@ public class UILogicMainMenu : MonoBehaviour
 
     public void ButtonNewGame()
     {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(BeforeTheGatesOpen);
+        sequence.AppendInterval(2f);
+        sequence.AppendCallback(AfterTheGatesOpen);
+
+        //AnimTextNewGameFalse();
+        //uILogicTopBar.TopBarPanelIsActiveFalse();
+        //MainMenuPanelIsActiveFalse();
+        //uILogicsGame.GamePanelIsActiveTrue();
+        //uILogicsGame.TextGameAmountOfArmor();
+        //uILogicsGame.TextGameAmountOfBomb();
+        //uILogicsGame.TextGameAmountOfPick();
+        //generationBlocks.RestartNumberBlocksSpawn();
+        //generationBlocks.ScriptEnabledTrue();
+        //uILogicsGame.UpdateAddHealth();
+        //score.ResetScore();
+        //coins.ResetCoins();
+        //musicSettings.PlayAudioClipsGame();
+    }
+    public void BeforeTheGatesOpen()
+    {
+        gates.MovementGateInDifferentSides();
         AnimTextNewGameFalse();
+        uILogicTopBar.TopBarPanelIsActiveFalse();
         MainMenuPanelIsActiveFalse();
-        uILogicsGame.GamePanelIsActiveTrue();
         uILogicsGame.TextGameAmountOfArmor();
         uILogicsGame.TextGameAmountOfBomb();
         uILogicsGame.TextGameAmountOfPick();
-        generationBlocks.ScriptEnabledTrue();
         generationBlocks.RestartNumberBlocksSpawn();
-        uILogicTopBar.TopBarPanelIsActiveFalse();
         uILogicsGame.UpdateAddHealth();
         score.ResetScore();
         coins.ResetCoins();
         musicSettings.PlayAudioClipsGame();
+    }
+    public void AfterTheGatesOpen()
+    {
+        uILogicsGame.GamePanelIsActiveTrue();
+        generationBlocks.ScriptEnabledTrue();
     }
 
     public void TextBestScoreMainMenu()
@@ -86,6 +118,12 @@ public class UILogicMainMenu : MonoBehaviour
     public void ButtonScoreboardPanel()
     {
         internetAccess.CheckInternetConnectionScoreboard();
+        MyBestScoreOnScoreboardPanel();
+    }
+    public void MyBestScoreOnScoreboardPanel()
+    {
+        _textMyNameOnScoreboardPanel.text = gameManager._playerName;
+        _textMyBestScoreOnScoreboardPanel.text = gameManager._playerBestScore.ToString();
     }
     public void ScoreboardLoadingIsActiveTrue()
     {
@@ -108,6 +146,7 @@ public class UILogicMainMenu : MonoBehaviour
     {
         soundsSettings.PlaySoundButton();
         ShopPanelIsActiveTrue();
+        skinsPlayer.ButtonSkin(skinsPlayer.activeSkin);
     }
     public void ShopPanelIsActiveTrue()
     {

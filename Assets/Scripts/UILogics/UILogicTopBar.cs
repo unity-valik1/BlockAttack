@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 using DG.Tweening.Core.Easing;
+using UnityEngine.UI;
 
 public class UILogicTopBar : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class UILogicTopBar : MonoBehaviour
     [SerializeField] private GameObject _AddPickTV;
     public TMP_Text _textPlayerPick;
     [SerializeField] private TMP_Text _textAmountOfPick;
-
+    [SerializeField] HorizontalLayoutGroup _horizontalLayoutGroup;
     Tween tween;
 
     private void Awake()
@@ -53,6 +54,9 @@ public class UILogicTopBar : MonoBehaviour
         TextArmorTopBarPanel();
         TextBombTopBarPanel();
         TextPickTopBarPanel();
+        Canvas.ForceUpdateCanvases();
+        _horizontalLayoutGroup.enabled = false;
+        _horizontalLayoutGroup.enabled = true;
     }
 
     //ТопБар

@@ -11,6 +11,8 @@ public class PlayAllGameObjects : MonoBehaviour
     StarAnim[] starAnims;
     CoinsAnim[] coinsAnims;
     BrokenHeartAnim[] brokenHeartAnims;
+    PickAnimRight[] pickAnimRight;
+    PickAnimLeft[] pickAnimLeft;
 
     //CFX_AutoDestructShuriken[] cFX_AutoDestructShurikens;
 
@@ -23,6 +25,8 @@ public class PlayAllGameObjects : MonoBehaviour
         PlayAllStarAnimOnTheScene();
         PlayAllCoinsAnimsOnTheScene();
         PlayAllBrokenHeartAnimOnTheScene();
+        PlayAllPickAnimRightOnTheScene();
+        PlayAllPickAnimLeftOnTheScene();
         //PauseAllCFX_AutoDestructShurikenOnTheScene();
     }
     private void PlayAllChangesColorBlockOnTheScene()
@@ -103,6 +107,28 @@ public class PlayAllGameObjects : MonoBehaviour
             for (int i = 0; i < brokenHeartAnims.Length; i++)
             {
                 brokenHeartAnims[i].AnimBrokenHeartPlay();
+            }
+        }
+    }
+    private void PlayAllPickAnimRightOnTheScene()
+    {
+        pickAnimRight = FindObjectsOfType<PickAnimRight>();
+        if (pickAnimRight != null)
+        {
+            for (int i = 0; i < pickAnimRight.Length; i++)
+            {
+                pickAnimRight[i].PickAnimRightPlay();
+            }
+        }
+    }
+    private void PlayAllPickAnimLeftOnTheScene()
+    {
+        pickAnimLeft = FindObjectsOfType<PickAnimLeft>();
+        if (pickAnimLeft != null)
+        {
+            for (int i = 0; i < pickAnimLeft.Length; i++)
+            {
+                pickAnimLeft[i].PickAnimLeftPlay();
             }
         }
     }

@@ -45,6 +45,7 @@ public class Health : MonoBehaviour
             lifes--;
             if (lifes <= 0)
             {
+                transform.position = new Vector2(0, 4f);
                 uILogicsGame.LossGamePanel();
                 return;
             }

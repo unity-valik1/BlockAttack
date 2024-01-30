@@ -5,6 +5,7 @@ using UnityEngine;
 public class ViewCupOnPlayer : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
+    public Movement movement;
 
     public Sprite[] cups;
 
@@ -17,6 +18,7 @@ public class ViewCupOnPlayer : MonoBehaviour
     private void Init()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        movement = GetComponentInParent<Movement>();
     }
     private void Start()
     {
@@ -33,5 +35,21 @@ public class ViewCupOnPlayer : MonoBehaviour
     public void ChangesCupRight()
     {
         spriteRenderer.sprite = cups[2];
+    }
+
+    public void WhichSpeed()
+    {
+        if (movement._movement == 0)
+        {
+            ChangesCupFront();
+        }
+        else if(movement._movement == -1)
+        {
+            ChangesCupLeft();
+        }
+        else if(movement._movement == 1)
+        {
+            ChangesCupRight();
+        }
     }
 }

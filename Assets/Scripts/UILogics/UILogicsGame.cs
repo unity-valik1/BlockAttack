@@ -27,6 +27,7 @@ public class UILogicsGame : MonoBehaviour
     PlayAllGameObjects playAllGameObjects;
     Armor armor;
     ArmorTimer armorTimer;
+    Gates gates;
 
     [SerializeField] private GameObject _GamePanel;
     [SerializeField] private GameObject _PausePanel;
@@ -60,24 +61,49 @@ public class UILogicsGame : MonoBehaviour
         playAllGameObjects = FindObjectOfType<PlayAllGameObjects>();
         armor = FindObjectOfType<Armor>();
         armorTimer = FindObjectOfType<ArmorTimer>();
+        gates = FindObjectOfType<Gates>();
     }
 
     //панель проигрыша
     public void LossGamePanel()
     {
-        _LossGamePanel.SetActive(true);
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(BeforeClosingTheGate);
+        sequence.AppendInterval(2f);
+        sequence.AppendCallback(AfterClosingTheGate);
+        //_LossGamePanel.SetActive(true);
+        //generationBlocks.ScriptEnabledFalse();
+        //pauseAllGameObjects.PauseAll();
+        //UpdateHealthInGame();
+        //uILogicTopBar.TopBarPanelIsActiveTrue();
+        //coins.AddPlayerCoins();
+        //uILogicTopBar.TextCoinsTopBarPanel();
+        //uILogicMainMenu.UpdateBestScore();
+        //TextScoreLossGamePanel(); 
+        //TextCoinsLossGamePanel();
+        //armor.ArmoreOff();
+        //musicSettings.PlayAudioClipsMenu();
+        //armorTimer.StopTimer();
+    }    
+    public void BeforeClosingTheGate()
+    {
+        gates.MovementGateInCenter();
+        GamePanelIsActiveFalse();
+        clearGamePanel.DestroyAll();
         generationBlocks.ScriptEnabledFalse();
         pauseAllGameObjects.PauseAll();
         UpdateHealthInGame();
-        uILogicTopBar.TopBarPanelIsActiveTrue();
         coins.AddPlayerCoins();
-        uILogicTopBar.TextCoinsTopBarPanel();
         uILogicMainMenu.UpdateBestScore();
-        TextScoreLossGamePanel(); 
-        TextCoinsLossGamePanel();
-        armor.ArmoreOff();
         musicSettings.PlayAudioClipsMenu();
         armorTimer.StopTimer();
+    }
+    public void AfterClosingTheGate()
+    {
+        _LossGamePanel.SetActive(true);
+        uILogicTopBar.TopBarPanelIsActiveTrue();
+        uILogicTopBar.TextCoinsTopBarPanel();
+        armor.ArmoreOff();
     }
     private void TextScoreLossGamePanel()
     {
@@ -87,7 +113,6 @@ public class UILogicsGame : MonoBehaviour
     {
         _textCoinsLossGamePanel.text = coins._currentCoinsGame.ToString();
     }
-
 
     //кнопка паузы
     public void ButtonPause()
@@ -119,6 +144,7 @@ public class UILogicsGame : MonoBehaviour
     //кнопка выхода из незаконченной игры
     public void ButtonExitPausePanel()
     {
+        gates.GateInCenter();
         _LossGamePanel.SetActive(true);
         uILogicTopBar.TopBarPanelIsActiveTrue();
         GamePanelIsActiveFalse();
@@ -166,7 +192,6 @@ public class UILogicsGame : MonoBehaviour
     {
         _textGameAmountOfPick.text = gameManager._playerPick.ToString();
     }
-
 
 
     public void UpdateHealthInGame()

@@ -12,6 +12,8 @@ public class ClearGamePanel : MonoBehaviour
     CoinsAnim[] coinsAnims;
     BrokenHeartAnim[] brokenHeartAnims;
     CFX_AutoDestructShuriken[] cFX_AutoDestructShurikens;
+    PickAnimRight[] pickAnimRight;
+    PickAnimLeft[] pickAnimLeft;
 
     public void DestroyAll()
     {
@@ -23,6 +25,8 @@ public class ClearGamePanel : MonoBehaviour
         DestroyAllCoinsAnimsOnTheScene();
         DestroyAllBrokenHeartAnimOnTheScene();
         DestroyAllCFX_AutoDestructShurikenOnTheScene();
+        DestroyAllPickAnimRightOnTheScene();
+        DestroyAllPickAnimLeftOnTheScene();
     }
     private void DestroyAllChangesColorBlockOnTheScene()
     {
@@ -116,6 +120,30 @@ public class ClearGamePanel : MonoBehaviour
             for (int i = 0; i < cFX_AutoDestructShurikens.Length; i++)
             {
                 Destroy(cFX_AutoDestructShurikens[i].gameObject);
+            }
+        }
+    }
+    private void DestroyAllPickAnimRightOnTheScene()
+    {
+        pickAnimRight = FindObjectsOfType<PickAnimRight>();
+        if (pickAnimRight != null)
+        {
+            for (int i = 0; i < pickAnimRight.Length; i++)
+            {
+                pickAnimRight[i].PickAnimRightFalse();
+                Destroy(pickAnimRight[i].gameObject);
+            }
+        }
+    }
+    private void DestroyAllPickAnimLeftOnTheScene()
+    {
+        pickAnimLeft = FindObjectsOfType<PickAnimLeft>();
+        if (pickAnimLeft != null)
+        {
+            for (int i = 0; i < pickAnimLeft.Length; i++)
+            {
+                pickAnimLeft[i].PickAnimLeftFalse();
+                Destroy(pickAnimLeft[i].gameObject);
             }
         }
     }

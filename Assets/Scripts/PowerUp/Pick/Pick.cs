@@ -98,8 +98,7 @@ public class Pick : MonoBehaviour
                     }
                 }
             }
-        }
-        
+        }      
     }
     public void UsePick()
     {

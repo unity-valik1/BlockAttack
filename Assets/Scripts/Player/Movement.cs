@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
-    [SerializeField] private float _movement;
+    public float _movement;
 
     [SerializeField] private bool _isJump;
 

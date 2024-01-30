@@ -11,6 +11,8 @@ public class PauseAllGameObjects : MonoBehaviour
     StarAnim[] starAnims;
     CoinsAnim[] coinsAnims;
     BrokenHeartAnim[] brokenHeartAnims;
+    PickAnimRight[] pickAnimRight;
+    PickAnimLeft[] pickAnimLeft;
     
     //CFX_AutoDestructShuriken[] cFX_AutoDestructShurikens;
 
@@ -23,6 +25,8 @@ public class PauseAllGameObjects : MonoBehaviour
         PauseAllStarAnimOnTheScene();
         PauseAllCoinsAnimsOnTheScene();
         PauseAllBrokenHeartAnimOnTheScene();
+        PauseAllPickAnimRightOnTheScene();
+        PauseAllPickAnimLeftOnTheScene();
         //PauseAllCFX_AutoDestructShurikenOnTheScene();
     }
     private void PauseAllChangesColorBlockOnTheScene()
@@ -39,7 +43,7 @@ public class PauseAllGameObjects : MonoBehaviour
             }
         }
     }
-    private void PauseAllStandardBlockOnTheScene()
+   private void PauseAllStandardBlockOnTheScene()
     {
         standardBlock = FindObjectsOfType<StandardBlock>();
         if (standardBlock != null)
@@ -106,6 +110,29 @@ public class PauseAllGameObjects : MonoBehaviour
             }
         }
     }
+    private void PauseAllPickAnimRightOnTheScene()
+    {
+        pickAnimRight = FindObjectsOfType<PickAnimRight>();
+        if (pickAnimRight != null)
+        {
+            for (int i = 0; i < pickAnimRight.Length; i++)
+            {
+                pickAnimRight[i].PickAnimRightPause();
+            }
+        }
+    }
+    private void PauseAllPickAnimLeftOnTheScene()
+    {
+        pickAnimLeft = FindObjectsOfType<PickAnimLeft>();
+        if (pickAnimLeft != null)
+        {
+            for (int i = 0; i < pickAnimLeft.Length; i++)
+            {
+                pickAnimLeft[i].PickAnimLeftPause();
+            }
+        }
+    }
+
     //private void PauseAllCFX_AutoDestructShurikenOnTheScene()
     //{
     //    cFX_AutoDestructShurikens = FindObjectsOfType<CFX_AutoDestructShuriken>();

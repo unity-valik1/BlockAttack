@@ -39,23 +39,26 @@ public class Bomb : MonoBehaviour
 
     public void Boom()
     {
-        bombSound.PlaySoundBomb();
-        UseBomb();
-        uILogicsGame.TextGameAmountOfBomb();
-        Sequence sequence = DOTween.Sequence().SetUpdate(true);
-        sequence.AppendCallback(animCameraEffectBomb.AnimCamera);
-        sequence.AppendCallback(boomSmoke.AnimBoomSmokeOn);
-        sequence.AppendInterval(2.2f);
-        sequence.AppendCallback(destroyAllBlocks.DestroyAllBlocksOnTheScene);
-        sequence.AppendInterval(0.2f);
-        sequence.AppendCallback(explosionEffect.EffectExplosion);
-        sequence.AppendInterval(0.2f);
-        sequence.AppendCallback(explosionEffect.EffectExplosionRight);
-        sequence.AppendInterval(0.2f);
-        sequence.AppendCallback(explosionEffect.EffectExplosionLeft);
-        sequence.AppendInterval(2.0f);
-        sequence.AppendCallback(boomSmoke.AnimBoomSmokeOff);
-        sequence.SetAutoKill(true);
+        if (gameManager._playerBomb >= 1)
+        {
+            bombSound.PlaySoundBomb();
+            UseBomb();
+            uILogicsGame.TextGameAmountOfBomb();
+            Sequence sequence = DOTween.Sequence().SetUpdate(true);
+            sequence.AppendCallback(animCameraEffectBomb.AnimCamera);
+            sequence.AppendCallback(boomSmoke.AnimBoomSmokeOn);
+            sequence.AppendInterval(2.2f);
+            sequence.AppendCallback(destroyAllBlocks.DestroyAllBlocksOnTheScene);
+            sequence.AppendInterval(0.2f);
+            sequence.AppendCallback(explosionEffect.EffectExplosion);
+            sequence.AppendInterval(0.2f);
+            sequence.AppendCallback(explosionEffect.EffectExplosionRight);
+            sequence.AppendInterval(0.2f);
+            sequence.AppendCallback(explosionEffect.EffectExplosionLeft);
+            sequence.AppendInterval(2.0f);
+            sequence.AppendCallback(boomSmoke.AnimBoomSmokeOff);
+            sequence.SetAutoKill(true);
+        }
     }
 
     public void UseBomb()

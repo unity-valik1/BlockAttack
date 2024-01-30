@@ -18,23 +18,27 @@ public class PickAnimRight : MonoBehaviour
         sequence.Append(transform.DORotate(new Vector3(0, 0, +100), 0.35f, RotateMode.Fast));
         sequence.AppendCallback(DeleteObj);
     }
-    public void AnimCoinFalse()
+    public void PickAnimRightFalse()
     {
         tween.Kill();
     }
 
-    public void AnimCoinPause()
+    public void PickAnimRightPause()
     {
         tween.Pause();
     }
-    public void AnimCoinPlay()
+    public void PickAnimRightPlay()
     {
         tween.Play();
     }
     void DeleteObj()
     {
-        PlayClipAtPoint(soundEffectsPick, transform.position, 1, 0);
-        PlayClipAtPoint(soundEffectsBlockDestroy, transform.position, 1, 0);
+        SoundsSettings soundsSettings = FindObjectOfType<SoundsSettings>();
+        if (soundsSettings._isActiveSounds == 1)
+        {
+            PlayClipAtPoint(soundEffectsPick, transform.position, 1, 0);
+            PlayClipAtPoint(soundEffectsBlockDestroy, transform.position, 1, 0);
+        }
         Instantiate(particleEffectsPick, transformEffectsPick.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

@@ -8,6 +8,7 @@ public class Armor : MonoBehaviour
     UILogicsGame uILogicsGame;
     DatabaseManager databaseManager;
     ArmorTimer armorTimer;
+    ViewCupOnPlayer viewCupOnPlayer;
 
     [SerializeField] private GameObject particleAddArmor;
     [SerializeField] private GameObject buttonAddArmor;
@@ -27,6 +28,7 @@ public class Armor : MonoBehaviour
         uILogicsGame = FindObjectOfType<UILogicsGame>();
         databaseManager = FindObjectOfType<DatabaseManager>();
         armorTimer = FindObjectOfType<ArmorTimer>();
+        viewCupOnPlayer = FindObjectOfType<ViewCupOnPlayer>();
     }
 
     public void ArmorIsActive()
@@ -37,6 +39,7 @@ public class Armor : MonoBehaviour
             ArmoreOn();
             UseArmor();
             uILogicsGame.TextGameAmountOfArmor();
+            viewCupOnPlayer.WhichSpeed();
             imgPlayerArmor.SetActive(true);
         }
         else
