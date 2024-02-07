@@ -10,9 +10,18 @@ public class BlockAnimDelete : MonoBehaviour
     public GameObject particleCoin;
     Tween tween;
 
+    public bool animDeleteView = true;
+
     private void Start()
     {
-        AnimBlockDelete();
+        if(animDeleteView)
+        {
+            AnimBlockDelete();
+        }
+        else
+        {
+            AnimBlockDeleteBomb();
+        }
     }
     public void AnimBlockDelete()
     {
@@ -21,11 +30,32 @@ public class BlockAnimDelete : MonoBehaviour
         sequence.Append(transform.DOScale(0f, 0.5f));
         sequence.AppendCallback(DeleteObj);
     }
+    public void AnimBlockDeleteBomb()
+    {
+        Sequence sequence = DOTween.Sequence();
+        tween = sequence;
+        sequence.Append(transform.DOScale(0f, 0.5f));
+        sequence.AppendCallback(DeleteObjBomb);
+    }
+    void DeleteObj()
+    {
+        ParticleEffect();
+        Destroy(gameObject);
+    }
+    void DeleteObjBomb()
+    {
+        ParticleEffectBomb();
+        Destroy(gameObject);
+    }
     private void ParticleEffect()
     {
         Instantiate(particleEffectPrefab, transform.position, Quaternion.identity);
         Instantiate(particleStar, transform.position, Quaternion.identity);
         Instantiate(particleCoin, transform.position, Quaternion.identity);
+    }
+    private void ParticleEffectBomb()
+    {
+        Instantiate(particleStar, transform.position, Quaternion.identity).GetComponent<StarAnim>()._onStartMove = false;
     }
     public void AnimBlockDeleteFalse()
     {
@@ -39,10 +69,5 @@ public class BlockAnimDelete : MonoBehaviour
     public void AnimBlockDeletePlay()
     {
         tween.Play();
-    }
-    void DeleteObj()
-    {
-        ParticleEffect();
-        Destroy(gameObject);
     }
 }

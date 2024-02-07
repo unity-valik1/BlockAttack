@@ -1,11 +1,8 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
     Rigidbody2D rb;
-    SpriteRenderer sr;
     Animator animator;
     ViewCupOnPlayer viewCupOnPlayer;
 
@@ -25,7 +22,6 @@ public class Movement : MonoBehaviour
     private void Init()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         viewCupOnPlayer = GetComponentInChildren<ViewCupOnPlayer>();
     }
@@ -59,15 +55,6 @@ public class Movement : MonoBehaviour
     {
         //комп
         //_movement = Input.GetAxis("Horizontal");
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            sr.flipX = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            sr.flipX = true;
-        }
 
         //тел
         rb.velocity = new Vector2(_movement * _speed, rb.velocity.y);

@@ -1,8 +1,3 @@
-using DG.Tweening;
-using DG.Tweening.Core.Easing;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pick : MonoBehaviour
@@ -10,7 +5,7 @@ public class Pick : MonoBehaviour
     GameManager gameManager;
     UILogicTopBar uILogicTopBar;
     UILogicsGame uILogicsGame;
-    DatabaseManager databaseManager;
+    //DatabaseManager databaseManager;
 
 
     [SerializeField] private GameObject particleAddPick;
@@ -26,7 +21,7 @@ public class Pick : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();       
         uILogicTopBar = FindObjectOfType<UILogicTopBar>();
         uILogicsGame = FindObjectOfType<UILogicsGame>();
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        //databaseManager = FindObjectOfType<DatabaseManager>();
     }
     public void PickActive()
     {
@@ -105,13 +100,17 @@ public class Pick : MonoBehaviour
         gameManager._playerPick--;
         uILogicTopBar.TextPickTopBarPanel();
         gameManager.SavePlayerPrefsPick();
-        databaseManager.SaveStatsDB();
+
+        //databaseManager.SaveStatsDB();
+
     }
     public void AddPick()
     {
         gameManager._playerPick++;
         Instantiate(particleAddPick, buttonAddPick.transform.position, Quaternion.identity);
         gameManager.SavePlayerPrefsPick();
-        databaseManager.SaveStatsDB();
+
+        //databaseManager.SaveStatsDB();
+
     }
 }

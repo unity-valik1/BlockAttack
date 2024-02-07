@@ -1,9 +1,5 @@
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class Bomb : MonoBehaviour
 {
@@ -15,10 +11,16 @@ public class Bomb : MonoBehaviour
     BombSound bombSound;
     UILogicTopBar uILogicTopBar;
     UILogicsGame uILogicsGame;
-    DatabaseManager databaseManager;
+    PauseAllGameObjects pauseAllGameObjects;
+    GenerationBlocks generationBlocks;
+    ClearGamePanel clearGamePanel;
+    PlayAllGameObjects playAllGameObjects;
+    //DatabaseManager databaseManager;
 
     [SerializeField] private GameObject particleAddBomb;
     [SerializeField] private GameObject buttonAddBomb;
+
+    public int blockCount;
 
     private void Awake()
     {
@@ -34,7 +36,11 @@ public class Bomb : MonoBehaviour
         bombSound = GetComponent<BombSound>();
         uILogicTopBar = FindObjectOfType<UILogicTopBar>();
         uILogicsGame = FindObjectOfType<UILogicsGame>();
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        pauseAllGameObjects = FindObjectOfType<PauseAllGameObjects>();
+        generationBlocks = FindObjectOfType<GenerationBlocks>();
+        clearGamePanel = FindObjectOfType<ClearGamePanel>();
+        playAllGameObjects = FindObjectOfType<PlayAllGameObjects>();
+        //databaseManager = FindObjectOfType<DatabaseManager>();
     }
 
     public void Boom()
@@ -45,10 +51,14 @@ public class Bomb : MonoBehaviour
             UseBomb();
             uILogicsGame.TextGameAmountOfBomb();
             Sequence sequence = DOTween.Sequence().SetUpdate(true);
+            sequence.AppendCallback(generationBlocks.ScriptEnabledFalse);
+            sequence.AppendCallback(pauseAllGameObjects.PauseAll);
             sequence.AppendCallback(animCameraEffectBomb.AnimCamera);
             sequence.AppendCallback(boomSmoke.AnimBoomSmokeOn);
             sequence.AppendInterval(2.2f);
             sequence.AppendCallback(destroyAllBlocks.DestroyAllBlocksOnTheScene);
+            sequence.AppendCallback(clearGamePanel.DestroyAllBomb);
+            sequence.AppendCallback(playAllGameObjects.PlayAllBomb); 
             sequence.AppendInterval(0.2f);
             sequence.AppendCallback(explosionEffect.EffectExplosion);
             sequence.AppendInterval(0.2f);
@@ -56,7 +66,9 @@ public class Bomb : MonoBehaviour
             sequence.AppendInterval(0.2f);
             sequence.AppendCallback(explosionEffect.EffectExplosionLeft);
             sequence.AppendInterval(2.0f);
+            sequence.AppendCallback(generationBlocks.ScriptEnabledTrue);
             sequence.AppendCallback(boomSmoke.AnimBoomSmokeOff);
+            sequence.AppendCallback(AddScore);
             sequence.SetAutoKill(true);
         }
     }
@@ -66,13 +78,24 @@ public class Bomb : MonoBehaviour
         gameManager._playerBomb--;
         uILogicTopBar.TextBombTopBarPanel();
         gameManager.SavePlayerPrefsBomb();
-        databaseManager.SaveStatsDB();
+
+        //databaseManager.SaveStatsDB();
+
     }
     public void AddBomb()
     {
         gameManager._playerBomb++;
         Instantiate(particleAddBomb, buttonAddBomb.transform.position, Quaternion.identity);
         gameManager.SavePlayerPrefsBomb();
-        databaseManager.SaveStatsDB();
+
+        //databaseManager.SaveStatsDB();
+
+    }
+    public void AddScore()
+    {
+        Score score = FindObjectOfType<Score>();
+        blockCount *= 50;
+        score.AddPoints(blockCount);
+        blockCount = 0;
     }
 }

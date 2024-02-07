@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ClearGamePanel : MonoBehaviour
@@ -22,6 +20,17 @@ public class ClearGamePanel : MonoBehaviour
         DestroyAllStaticBlocksOnTheScene();
         DestroyAllBlockAnimDeleteOnTheScene();
         DestroyAllStarAnimOnTheScene();
+        DestroyAllCoinsAnimsOnTheScene();
+        DestroyAllBrokenHeartAnimOnTheScene();
+        DestroyAllCFX_AutoDestructShurikenOnTheScene();
+        DestroyAllPickAnimRightOnTheScene();
+        DestroyAllPickAnimLeftOnTheScene();
+    }
+    public void DestroyAllBomb()
+    {
+        DestroyAllChangesColorBlockOnTheScene();
+        DestroyAllStandardBlockOnTheScene();
+        DestroyAllStaticBlocksOnTheScene();
         DestroyAllCoinsAnimsOnTheScene();
         DestroyAllBrokenHeartAnimOnTheScene();
         DestroyAllCFX_AutoDestructShurikenOnTheScene();

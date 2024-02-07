@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayAllGameObjects : MonoBehaviour
@@ -27,6 +25,11 @@ public class PlayAllGameObjects : MonoBehaviour
         PlayAllBrokenHeartAnimOnTheScene();
         PlayAllPickAnimRightOnTheScene();
         PlayAllPickAnimLeftOnTheScene();
+        //PauseAllCFX_AutoDestructShurikenOnTheScene();
+    }
+    public void PlayAllBomb()
+    {
+        PlayAllBlockAnimDeleteOnTheScene();
         //PauseAllCFX_AutoDestructShurikenOnTheScene();
     }
     private void PlayAllChangesColorBlockOnTheScene()

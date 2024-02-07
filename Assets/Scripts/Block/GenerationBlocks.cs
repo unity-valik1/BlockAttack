@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GenerationBlocks : MonoBehaviour
 {
-    [SerializeField] GameObject[] _prefabBlocks;//Префаб
+    [SerializeField] GameObject[] _prefabSpawnBlocks;//Префаб
     [SerializeField] GameObject[] _spawnPoints;
 
     [SerializeField] float _spawnSpeed;
@@ -14,6 +14,8 @@ public class GenerationBlocks : MonoBehaviour
     public int _repeatingSpawnInFirstLines = 0;
     public int _repeatingSpawnInSecondLines = 0;
 
+    public int gameMode = 0;
+
     void Update()
     {
         _time += _spawnSpeed * Time.deltaTime;
@@ -24,6 +26,7 @@ public class GenerationBlocks : MonoBehaviour
             BoostBlockSpawning();
         }
     }
+
 
     private void InterestCalculation()
     {
@@ -134,8 +137,32 @@ public class GenerationBlocks : MonoBehaviour
 
     private void SpawnBlock(int numberSpawnPoint)
     {
-        int numberBlock = Random.Range(0, _prefabBlocks.Length);
-        Instantiate(_prefabBlocks[numberBlock], _spawnPoints[numberSpawnPoint].transform.position, Quaternion.identity);
+        //int numberBlock = Random.Range(0, _prefabSpawnBlocks.Length);
+        int numberBlock = Random.Range(0, 101);
+        if(numberBlock >= 0 && numberBlock <= 19)
+        {
+            Instantiate(_prefabSpawnBlocks[0], _spawnPoints[numberSpawnPoint].transform.position, Quaternion.identity);
+        }
+        else if(numberBlock >= 20 && numberBlock <= 39)
+        {
+            Instantiate(_prefabSpawnBlocks[1], _spawnPoints[numberSpawnPoint].transform.position, Quaternion.identity);
+        }
+        else if(numberBlock >= 40 && numberBlock <= 59)
+        {
+            Instantiate(_prefabSpawnBlocks[2], _spawnPoints[numberSpawnPoint].transform.position, Quaternion.identity);
+        }
+        else if(numberBlock >= 60 && numberBlock <= 79)
+        {
+            Instantiate(_prefabSpawnBlocks[3], _spawnPoints[numberSpawnPoint].transform.position, Quaternion.identity);
+        }
+        else if(numberBlock >= 80 && numberBlock <= 91)
+        {
+            Instantiate(_prefabSpawnBlocks[4], _spawnPoints[numberSpawnPoint].transform.position, Quaternion.identity);
+        }
+        else if(numberBlock >= 92 && numberBlock <= 100)
+        {
+            Instantiate(_prefabSpawnBlocks[5], _spawnPoints[numberSpawnPoint].transform.position, Quaternion.identity);
+        }
     }
 
     private void BoostBlockSpawning()
@@ -158,7 +185,6 @@ public class GenerationBlocks : MonoBehaviour
             _numberBlocksSpawn = 151;
         }
     }
-
     public void RestartNumberBlocksSpawn()
     {
         _numberBlocksSpawn = 0;
@@ -172,5 +198,14 @@ public class GenerationBlocks : MonoBehaviour
     public void ScriptEnabledFalse()
     {
         enabled = false;
+    }
+
+    public void GameModeStandart()
+    {
+        gameMode = 0;
+    }
+    public void GameModeLevels()
+    {
+        gameMode = 1;
     }
 }

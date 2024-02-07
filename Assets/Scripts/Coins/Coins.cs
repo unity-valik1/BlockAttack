@@ -1,9 +1,5 @@
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,7 +13,7 @@ public class Coins : MonoBehaviour
     Bomb bomb;
     Pick pick;
     UILogicsGame uILogicsGame;
-    DatabaseManager databaseManager;
+    //DatabaseManager databaseManager;
 
     [SerializeField] private TMP_Text _textCurrentCoins;
     [SerializeField] private GameObject _coins;
@@ -43,7 +39,7 @@ public class Coins : MonoBehaviour
         bomb = FindObjectOfType<Bomb>();
         pick = FindObjectOfType<Pick>();
         uILogicsGame = FindObjectOfType<UILogicsGame>();
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        //databaseManager = FindObjectOfType<DatabaseManager>();
     }
 
     public void ResetCoins()
@@ -114,7 +110,9 @@ public class Coins : MonoBehaviour
     {
         gameManager._playerCoins += _currentCoinsGame;
         gameManager.SavePlayerPrefsCoins();
-        databaseManager.SaveStatsDB();
+
+        //databaseManager.SaveStatsDB();
+
     }
     public void AddArmorForCoins()
     {
@@ -127,7 +125,9 @@ public class Coins : MonoBehaviour
             uILogicTopBar.TextAmountOfArmorAddArmorPanel();
             uILogicTopBar.TextCoinsTopBarPanel();
             uILogicsGame.TextGameAmountOfArmor();
-            databaseManager.SaveStatsDB();
+
+            //databaseManager.SaveStatsDB();
+
         }
         else
         {
@@ -145,7 +145,9 @@ public class Coins : MonoBehaviour
             uILogicTopBar.TextAmountOfBombAddBombPanel();
             uILogicTopBar.TextCoinsTopBarPanel();
             uILogicsGame.TextGameAmountOfBomb();
-            databaseManager.SaveStatsDB();
+
+            //databaseManager.SaveStatsDB();
+
         }
         else
         {
@@ -163,7 +165,9 @@ public class Coins : MonoBehaviour
             uILogicTopBar.TextAmountOfPickAddPickPanel();
             uILogicTopBar.TextCoinsTopBarPanel();
             uILogicsGame.TextGameAmountOfPick();
-            databaseManager.SaveStatsDB();
+
+            //databaseManager.SaveStatsDB();
+
         }
         else
         {

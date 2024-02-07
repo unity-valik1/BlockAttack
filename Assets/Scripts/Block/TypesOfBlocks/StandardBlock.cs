@@ -405,6 +405,7 @@ public class StandardBlock : MonoBehaviour
             {
                 if (blocksDelete[k] != null || blocksDelete[k] == null)
                 {
+                    block.GameMode(blocksDelete[k]._numberBlock);
                     //blocksDelete[k].DOKill(false);
                     blocksDelete[k]._isDelete = true;
                     blocksDelete[k].BlockAnimDelete();

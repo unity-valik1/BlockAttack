@@ -7,7 +7,7 @@ public class SkinsPlayer : MonoBehaviour
     GameManager gameManager;
     UILogicTopBar uILogicTopBar;
     SoundsSettings soundsSettings;
-    DatabaseManager databaseManager;
+    //DatabaseManager databaseManager;
 
 
     [SerializeField] private Animator animatorPlayer;
@@ -20,7 +20,7 @@ public class SkinsPlayer : MonoBehaviour
 
     public int[] arrayPriceOfSkins = new int[2];
     //куплен скин -1 не куплен -0
-    [SerializeField] private int[] arrayBuySkin = new int[2];
+    public int[] arrayBuySkin = new int[2];
 
     [SerializeField] private GameObject[] buySkinButton;
     [SerializeField] private GameObject[] buySkinText;
@@ -47,7 +47,7 @@ public class SkinsPlayer : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         uILogicTopBar = FindObjectOfType<UILogicTopBar>();
         soundsSettings = FindObjectOfType<SoundsSettings>();
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        //databaseManager = FindObjectOfType<DatabaseManager>();
     }
     private void InitPlayerPrefs()
     {
@@ -168,7 +168,9 @@ public class SkinsPlayer : MonoBehaviour
 
             ButtonPutSkin(index);
 
-            databaseManager.SaveStatsDB();
+
+            //databaseManager.SaveStatsDB();
+
         }
         else
         {

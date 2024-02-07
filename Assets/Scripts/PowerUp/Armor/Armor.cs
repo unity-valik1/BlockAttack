@@ -6,7 +6,7 @@ public class Armor : MonoBehaviour
     ArmorSound armorSound;
     UILogicTopBar uILogicTopBar;
     UILogicsGame uILogicsGame;
-    DatabaseManager databaseManager;
+    //DatabaseManager databaseManager;
     ArmorTimer armorTimer;
     ViewCupOnPlayer viewCupOnPlayer;
 
@@ -26,7 +26,7 @@ public class Armor : MonoBehaviour
         armorSound = FindObjectOfType<ArmorSound>();
         uILogicTopBar = FindObjectOfType<UILogicTopBar>();
         uILogicsGame = FindObjectOfType<UILogicsGame>();
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        //databaseManager = FindObjectOfType<DatabaseManager>();
         armorTimer = FindObjectOfType<ArmorTimer>();
         viewCupOnPlayer = FindObjectOfType<ViewCupOnPlayer>();
     }
@@ -53,14 +53,14 @@ public class Armor : MonoBehaviour
         gameManager._playerArmor--;
         uILogicTopBar.TextArmorTopBarPanel();
         gameManager.SavePlayerPrefsArmor();
-        databaseManager.SaveStatsDB();
+        //databaseManager.SaveStatsDB();
     }
     public void AddArmor()
     {
         gameManager._playerArmor++;
         Instantiate(particleAddArmor, buttonAddArmor.transform.position, Quaternion.identity);
         gameManager.SavePlayerPrefsArmor();
-        databaseManager.SaveStatsDB();
+        //databaseManager.SaveStatsDB();
     }
 
     public void ArmoreOn()

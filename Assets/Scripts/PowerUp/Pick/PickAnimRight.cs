@@ -6,6 +6,7 @@ using UnityEngine;
 public class PickAnimRight : MonoBehaviour
 {
     [SerializeField] private GameObject particleEffectsPick;
+    [SerializeField] private GameObject particleEffectsStar;
     [SerializeField] private AudioClip soundEffectsPick;
     [SerializeField] private AudioClip soundEffectsBlockDestroy;
     [SerializeField] private GameObject transformEffectsPick;
@@ -40,6 +41,8 @@ public class PickAnimRight : MonoBehaviour
             PlayClipAtPoint(soundEffectsBlockDestroy, transform.position, 1, 0);
         }
         Instantiate(particleEffectsPick, transformEffectsPick.transform.position, Quaternion.identity);
+        Instantiate(particleEffectsStar, transformEffectsPick.transform.position, Quaternion.identity);
+        AddScore();
         Destroy(gameObject);
     }
     public static void PlayClipAtPoint(AudioClip clip, Vector3 position, [UnityEngine.Internal.DefaultValue("1.0F")] float volume, float spatialBlend)
@@ -52,5 +55,10 @@ public class PickAnimRight : MonoBehaviour
         audioSource.volume = volume;
         audioSource.Play();
         Object.Destroy(gameObject, clip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
+    }
+    public void AddScore()
+    {
+        Score score = FindObjectOfType<Score>();
+        score.AddPoints(50);
     }
 }

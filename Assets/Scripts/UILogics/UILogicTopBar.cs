@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
-using DG.Tweening.Core.Easing;
 using UnityEngine.UI;
 
 public class UILogicTopBar : MonoBehaviour
@@ -67,7 +64,7 @@ public class UILogicTopBar : MonoBehaviour
     }
     public void TopBarPanelIsActiveFalse()
     {
-        _SettingsPanel.transform.DOScale(0, 0.5f);
+
         _TopBarPanel.SetActive(false);
     }
 

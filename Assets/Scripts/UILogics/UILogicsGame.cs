@@ -1,11 +1,6 @@
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class UILogicsGame : MonoBehaviour
 {
@@ -32,6 +27,7 @@ public class UILogicsGame : MonoBehaviour
     [SerializeField] private GameObject _GamePanel;
     [SerializeField] private GameObject _PausePanel;
     [SerializeField] private GameObject _LossGamePanel;
+    [SerializeField] private GameObject _NextLevelPanel;
 
     [SerializeField] private GameObject[] _lifesItems;
 
@@ -71,6 +67,7 @@ public class UILogicsGame : MonoBehaviour
         sequence.AppendCallback(BeforeClosingTheGate);
         sequence.AppendInterval(2f);
         sequence.AppendCallback(AfterClosingTheGate);
+
         //_LossGamePanel.SetActive(true);
         //generationBlocks.ScriptEnabledFalse();
         //pauseAllGameObjects.PauseAll();
@@ -79,19 +76,19 @@ public class UILogicsGame : MonoBehaviour
         //coins.AddPlayerCoins();
         //uILogicTopBar.TextCoinsTopBarPanel();
         //uILogicMainMenu.UpdateBestScore();
-        //TextScoreLossGamePanel(); 
+        //TextScoreLossGamePanel();
         //TextCoinsLossGamePanel();
         //armor.ArmoreOff();
         //musicSettings.PlayAudioClipsMenu();
         //armorTimer.StopTimer();
-    }    
+    }
     public void BeforeClosingTheGate()
     {
         gates.MovementGateInCenter();
         GamePanelIsActiveFalse();
+        pauseAllGameObjects.PauseAll();
         clearGamePanel.DestroyAll();
         generationBlocks.ScriptEnabledFalse();
-        pauseAllGameObjects.PauseAll();
         UpdateHealthInGame();
         coins.AddPlayerCoins();
         uILogicMainMenu.UpdateBestScore();
@@ -100,16 +97,18 @@ public class UILogicsGame : MonoBehaviour
     }
     public void AfterClosingTheGate()
     {
-        _LossGamePanel.SetActive(true);
+        LossGamePanelIsActiveTrue();
+        TextScoreLossGamePanel();
+        TextCoinsLossGamePanel();
         uILogicTopBar.TopBarPanelIsActiveTrue();
         uILogicTopBar.TextCoinsTopBarPanel();
         armor.ArmoreOff();
     }
-    private void TextScoreLossGamePanel()
+    public void TextScoreLossGamePanel()
     {
         _textScoreLossGamePanel.text = score._currentScore.ToString();
     }
-    private void TextCoinsLossGamePanel()
+    public void TextCoinsLossGamePanel()
     {
         _textCoinsLossGamePanel.text = coins._currentCoinsGame.ToString();
     }
@@ -129,8 +128,8 @@ public class UILogicsGame : MonoBehaviour
     //кнопка выйти в меню
     public void ButtonMainMenu()
     {
-        _LossGamePanel.SetActive(false);
-        _PausePanel.SetActive(false);
+        LossGamePanelIsActiveFalse();
+        PausePanelIsActiveFalse();
         GamePanelIsActiveFalse();
         uILogicMainMenu.MainMenuPanelIsActiveTrue();
         uILogicMainMenu.AnimTextNewGameTrue();
@@ -144,19 +143,53 @@ public class UILogicsGame : MonoBehaviour
     //кнопка выхода из незаконченной игры
     public void ButtonExitPausePanel()
     {
-        gates.GateInCenter();
-        _LossGamePanel.SetActive(true);
+        if (generationBlocks.gameMode == 0)
+        {
+            gates.GateInCenter();
+            LossGamePanelIsActiveTrue();
+            uILogicTopBar.TopBarPanelIsActiveTrue();
+            GamePanelIsActiveFalse();
+            PausePanelIsActiveFalse();
+            generationBlocks.ScriptEnabledFalse();
+            clearGamePanel.DestroyAll();
+            coins.AddPlayerCoins();
+            uILogicTopBar.TextCoinsTopBarPanel();
+            uILogicMainMenu.UpdateBestScore();
+            TextScoreLossGamePanel();
+            TextCoinsLossGamePanel();
+            soundsSettings.PlaySoundButton();
+        }
+        else if (generationBlocks.gameMode == 1)
+        {
+            gates.GateInCenter();
+            LossGamePanelIsActiveFalse();
+            PausePanelIsActiveFalse();
+            GamePanelIsActiveFalse();
+            uILogicTopBar.TopBarPanelIsActiveTrue();
+            generationBlocks.ScriptEnabledFalse();
+            clearGamePanel.DestroyAll();
+            coins.AddPlayerCoins();
+            uILogicTopBar.TextCoinsTopBarPanel();
+            uILogicMainMenu.UpdateBestScore();
+            uILogicMainMenu.MainMenuPanelIsActiveTrue();
+            uILogicMainMenu.AnimTextNewGameTrue();
+            uILogicTopBar.TopBarPanelIsActiveTrue();
+            armor.ArmoreOff();
+            soundsSettings.PlaySoundButton();
+        }
+    }
+
+    //кнопка выхода из панели следующего уровня
+    public void ButtonExitNextLevelPanel()
+    {
+        LossGamePanelIsActiveFalse();
+        PausePanelIsActiveFalse();
+        NextLevelPanelIsActiveFalse();
         uILogicTopBar.TopBarPanelIsActiveTrue();
-        GamePanelIsActiveFalse();
-        _PausePanel.SetActive(false);
-        generationBlocks.ScriptEnabledFalse();
-        clearGamePanel.DestroyAll();
-        coins.AddPlayerCoins();
-        uILogicTopBar.TextCoinsTopBarPanel();
-        uILogicMainMenu.UpdateBestScore();
-        TextScoreLossGamePanel();
-        TextCoinsLossGamePanel();
+        uILogicMainMenu.MainMenuPanelIsActiveTrue();
+        uILogicMainMenu.AnimTextNewGameTrue();
         soundsSettings.PlaySoundButton();
+
     }
 
     //кнопка продолжить игру
@@ -171,6 +204,30 @@ public class UILogicsGame : MonoBehaviour
         armorTimer.StartTimer();
     }
 
+    public void NextLevelPanelIsActiveTrue()
+    {
+        _NextLevelPanel.SetActive(true);
+    }
+    public void NextLevelPanelIsActiveFalse()
+    {
+        _NextLevelPanel.SetActive(false);
+    }
+    public void PausePanelIsActiveTrue()
+    {
+        _PausePanel.SetActive(true);
+    }
+    public void PausePanelIsActiveFalse()
+    {
+        _PausePanel.SetActive(false);
+    }
+    public void LossGamePanelIsActiveTrue()
+    {
+        _LossGamePanel.SetActive(true);
+    }
+    public void LossGamePanelIsActiveFalse()
+    {
+        _LossGamePanel.SetActive(false);
+    }
     public void GamePanelIsActiveTrue()
     {
         _GamePanel.SetActive(true);
@@ -216,7 +273,8 @@ public class UILogicsGame : MonoBehaviour
     }
     public void UpdateAddHealth()
     {
-        /*GetActivePlayerHealth()*/health.lifes = /*GetActivePlayerHealth()*/health.maxLifes;
+        /*GetActivePlayerHealth()*/
+        health.lifes = /*GetActivePlayerHealth()*/health.maxLifes;
         for (int i = 0; i < _lifesItems.Length; i++)
         {
             if (i < /*GetActivePlayerHealth()*/health.lifes)
@@ -243,5 +301,5 @@ public class UILogicsGame : MonoBehaviour
         var newPlayer = Instantiate<Player>(NewPlayerPrefab, prevPlayer.transform.position, prevPlayer.transform.rotation);
         Destroy(prevPlayer.gameObject);
         PlayerManager.Instance.ActivePlayer = newPlayer;
-    }
+    }//Синглтон
 }

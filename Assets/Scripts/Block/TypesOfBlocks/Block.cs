@@ -9,6 +9,7 @@ public class Block : MonoBehaviour
     [SerializeField] private GameObject blockAnimDelete;
 
     public int _numberBlock;
+
     public bool isFall = true;
     public bool _isDelete = false;
     public bool _isMove = false;
@@ -30,12 +31,27 @@ public class Block : MonoBehaviour
         GameObject go = Instantiate(blockAnimDelete, transform.position, Quaternion.identity);
         go.GetComponent<SpriteRenderer>().sprite = sr.sprite;
     }
+    public void BlockAnimDeleteBomb()
+    {
+        GameObject go = Instantiate(blockAnimDelete, transform.position, Quaternion.identity);
+        go.GetComponent<SpriteRenderer>().sprite = sr.sprite;
+        go.GetComponent<BlockAnimDelete>().animDeleteView = false;
+    }
     public void PlaySoundBlocksDestroy()
     {
         SoundsSettings soundsSettings = FindObjectOfType<SoundsSettings>();
         if (soundsSettings._isActiveSounds == 1)
         {
             audioSource.Play();
+        }
+    }
+    public void GameMode(int numberBlock)
+    {
+        GenerationBlocks generationBlocks = FindObjectOfType<GenerationBlocks>();
+        if (generationBlocks.gameMode == 1)
+        {
+            LevelMissions levelMissions = FindObjectOfType<LevelMissions>();
+            levelMissions.MinusBlock(numberBlock);
         }
     }
 }

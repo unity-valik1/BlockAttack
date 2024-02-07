@@ -1,8 +1,6 @@
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UILogicMainMenu : MonoBehaviour
 {
@@ -13,17 +11,19 @@ public class UILogicMainMenu : MonoBehaviour
     Coins coins;
     MusicSettings musicSettings;
     Tween tween;
-    InternetAccess internetAccess;
+    //InternetAccess internetAccess;
     SoundsSettings soundsSettings;
     GameManager gameManager;
-    DatabaseManager databaseManager;
+    //DatabaseManager databaseManager;
     SkinsPlayer skinsPlayer;
     Gates gates;
+    LevelMissions levelMissions;
 
     [SerializeField] private GameObject _MainMenuPanel;
     [SerializeField] private GameObject _scoreboardPanel;
     [SerializeField] private GameObject _shopPanel;
     [SerializeField] private GameObject _scoreboardLoading;
+    [SerializeField] private GameObject _LevelsPanel;
 
     [SerializeField] private TMP_Text _textMyBestScoreOnScoreboardPanel;
     [SerializeField] private TMP_Text _textMyNameOnScoreboardPanel;
@@ -43,12 +43,13 @@ public class UILogicMainMenu : MonoBehaviour
         score = FindObjectOfType<Score>();
         coins = FindObjectOfType<Coins>();
         musicSettings = FindObjectOfType<MusicSettings>();
-        internetAccess = FindObjectOfType<InternetAccess>();
+        //internetAccess = FindObjectOfType<InternetAccess>();
         soundsSettings = FindObjectOfType<SoundsSettings>();
         gameManager = FindObjectOfType<GameManager>();
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        //databaseManager = FindObjectOfType<DatabaseManager>();
         skinsPlayer = FindObjectOfType<SkinsPlayer>();
         gates = FindObjectOfType<Gates>();
+        levelMissions = FindObjectOfType<LevelMissions>();
     }
 
     private void Start()
@@ -64,20 +65,6 @@ public class UILogicMainMenu : MonoBehaviour
         sequence.AppendCallback(BeforeTheGatesOpen);
         sequence.AppendInterval(2f);
         sequence.AppendCallback(AfterTheGatesOpen);
-
-        //AnimTextNewGameFalse();
-        //uILogicTopBar.TopBarPanelIsActiveFalse();
-        //MainMenuPanelIsActiveFalse();
-        //uILogicsGame.GamePanelIsActiveTrue();
-        //uILogicsGame.TextGameAmountOfArmor();
-        //uILogicsGame.TextGameAmountOfBomb();
-        //uILogicsGame.TextGameAmountOfPick();
-        //generationBlocks.RestartNumberBlocksSpawn();
-        //generationBlocks.ScriptEnabledTrue();
-        //uILogicsGame.UpdateAddHealth();
-        //score.ResetScore();
-        //coins.ResetCoins();
-        //musicSettings.PlayAudioClipsGame();
     }
     public void BeforeTheGatesOpen()
     {
@@ -89,6 +76,8 @@ public class UILogicMainMenu : MonoBehaviour
         uILogicsGame.TextGameAmountOfBomb();
         uILogicsGame.TextGameAmountOfPick();
         generationBlocks.RestartNumberBlocksSpawn();
+        generationBlocks.GameModeStandart();
+        levelMissions.PanelMissionsIsActive();
         uILogicsGame.UpdateAddHealth();
         score.ResetScore();
         coins.ResetCoins();
@@ -111,15 +100,15 @@ public class UILogicMainMenu : MonoBehaviour
             gameManager._playerBestScore = score._currentScore;
             _textBestScore.text = gameManager._playerBestScore.ToString();
             gameManager.SavePlayerPrefsBestScore();
-            databaseManager.SaveStatsDB();
+            //databaseManager.SaveStatsDB();
         }
     }
 
-    public void ButtonScoreboardPanel()
-    {
-        internetAccess.CheckInternetConnectionScoreboard();
-        MyBestScoreOnScoreboardPanel();
-    }
+    //public void ButtonScoreboardPanel()
+    //{
+    //    internetAccess.CheckInternetConnectionScoreboard();
+    //    MyBestScoreOnScoreboardPanel();
+    //}
     public void MyBestScoreOnScoreboardPanel()
     {
         _textMyNameOnScoreboardPanel.text = gameManager._playerName;
@@ -188,5 +177,15 @@ public class UILogicMainMenu : MonoBehaviour
     {
         tween.Kill();
         _textNewGame.transform.localScale = new Vector3(1, 1, 1);
-    } 
+    }
+    public void LevelsPanelIsActiveTrue()
+    {
+        _LevelsPanel.SetActive(true);
+        levelMissions.UpdateLoadLevel();
+        levelMissions.ActivePanelsLevelsButtons(0);
+    }
+    public void LevelsPanelIsActiveFalse()
+    {
+        _LevelsPanel.SetActive(false);
+    }
 }

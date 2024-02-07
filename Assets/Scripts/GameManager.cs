@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -86,5 +84,15 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetString("_playerName", _playerName);
         PlayerPrefs.Save();
+    }
+
+    public void StandartGameManager()
+    {
+        _playerBestScore = 0;
+        _playerCoins = 10000;
+        _playerArmor = 10;
+        _playerBomb = 3;
+        _playerPick = 20;
+        _playerName = "Игрок";
     }
 }
